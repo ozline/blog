@@ -6,7 +6,7 @@
   <link href="https://ozline.icu/atom.xml" rel="self"/>
   
   <link href="https://ozline.icu/"/>
-  <updated>2022-11-09T17:39:57.951Z</updated>
+  <updated>2023-04-12T11:13:37.559Z</updated>
   <id>https://ozline.icu/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CMU-15-418 Assignment1 - Performance Analysis on a Quad-Core CPU</title>
+    <link href="https://ozline.icu/f92dfd8d9bc2/"/>
+    <id>https://ozline.icu/f92dfd8d9bc2/</id>
+    <published>2023-04-01T19:11:00.000Z</published>
+    <updated>2023-04-12T11:13:37.559Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;Assignment 1 - Performance Analysis on a Quad-Core CPU&lt;/h1&gt;
+&lt;p&gt;我学习的是&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="超算" scheme="https://ozline.icu/categories/%E8%B6%85%E7%AE%97/"/>
+    
+    
+    <category term="HPC" scheme="https://ozline.icu/tags/HPC/"/>
+    
+    <category term="cmu15418" scheme="https://ozline.icu/tags/cmu15418/"/>
+    
+  </entry>
   
   <entry>
     <title>HPL本机性能调优分析</title>
@@ -535,34 +563,6 @@
     
     
     <category term="智能家居" scheme="https://ozline.icu/tags/%E6%99%BA%E8%83%BD%E5%AE%B6%E5%B1%85/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【题解】CodeForces-936A SAVE ENERGY!</title>
-    <link href="https://ozline.icu/a6579764190c/"/>
-    <id>https://ozline.icu/a6579764190c/</id>
-    <published>2021-12-12T18:30:00.000Z</published>
-    <updated>2022-05-05T13:43:55.000Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1&gt;CodeForces-936A SAVE ENERGY!&lt;/h1&gt;
-&lt;p&gt;CF：&lt;a</summary>
-        
-      
-    
-    
-    
-    <category term="CodeForces题解" scheme="https://ozline.icu/categories/CodeForces%E9%A2%98%E8%A7%A3/"/>
-    
-    
-    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
-    
-    <category term="数学" scheme="https://ozline.icu/tags/%E6%95%B0%E5%AD%A6/"/>
     
   </entry>
   
