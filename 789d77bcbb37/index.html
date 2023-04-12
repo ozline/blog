@@ -1,0 +1,769 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://files.ozline.icu/images/site.ico">
+  <link rel="icon" href="https://files.ozline.icu/images/site.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="OZLIINEX">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="智学网(zhixue.com)HTTP协议分析记录 2018.11.23，智学网APP，Android，Charles抓包 登录 接口API 1234POSThttp:&#x2F;&#x2F;www.zhixue.com&#x2F;container&#x2F;app&#x2F;weakCheckLogin?password&#x3D;08c185208d0e57efc854&amp;loginName&#x3D;38268068&amp;description&#x3D;%">
+<meta property="og:type" content="article">
+<meta property="og:title" content="智学网HTTP协议分析记录">
+<meta property="og:url" content="https://ozline.icu/789d77bcbb37/index.html">
+<meta property="og:site_name" content="OZLIINEX&#39;s Blog">
+<meta property="og:description" content="智学网(zhixue.com)HTTP协议分析记录 2018.11.23，智学网APP，Android，Charles抓包 登录 接口API 1234POSThttp:&#x2F;&#x2F;www.zhixue.com&#x2F;container&#x2F;app&#x2F;weakCheckLogin?password&#x3D;08c185208d0e57efc854&amp;loginName&#x3D;38268068&amp;description&#x3D;%">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-16T17:29:43.000Z">
+<meta property="article:modified_time" content="2021-12-20T19:12:19.000Z">
+<meta property="article:author" content="OZLIINEX">
+<meta property="article:tag" content="HTTP">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>智学网HTTP协议分析记录 - OZLIINEX&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ozline.icu","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":202181,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- 51.la Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('//js.users.51.la/202181.js');
+      }
+    </script>
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="OZLIINEX's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>OZLIINEX&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://files.ozline.icu/images/BannerImg.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="智学网HTTP协议分析记录"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-10-16 17:29" pubdate>
+          2021年10月16日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          21k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          179 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">智学网HTTP协议分析记录</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>智学网(<a target="_blank" rel="noopener" href="http://zhixue.com">zhixue.com</a>)HTTP协议分析记录</h1>
+<p>2018.11.23，智学网APP，Android，Charles抓包</p>
+<h1>登录</h1>
+<h2 id="接口API">接口API</h2>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">POST</span><br><span class="hljs-attribute">http</span>://www.zhixue.com/container/app/weakCheckLogin?<br><br><span class="hljs-attribute">password</span>=<span class="hljs-number">08</span>c185208d0e57efc854&amp;loginName=<span class="hljs-number">38268068</span>&amp;description=%<span class="hljs-number">7</span>B%<span class="hljs-number">27</span>encrypt%<span class="hljs-number">27</span>%<span class="hljs-number">3</span>A%<span class="hljs-number">5</span>B%<span class="hljs-number">27</span>password%<span class="hljs-number">27</span>%<span class="hljs-number">5</span>D%<span class="hljs-number">7</span>D&amp;deviceMac=<span class="hljs-number">50</span>%<span class="hljs-number">3</span>A8F%<span class="hljs-number">3</span>A4C%<span class="hljs-number">3</span>AFA%<span class="hljs-number">3</span>AAA%<span class="hljs-number">3</span>A3B&amp;deviceId=<span class="hljs-number">866146033672761</span><br></code></pre></td></tr></table></figure>
+<p>POST数据解析</p>
+<table>
+<thead>
+<tr>
+<th>password</th>
+<th>08c185208d0e57efc854</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>loginName</td>
+<td>38268068</td>
+</tr>
+<tr>
+<td>description</td>
+<td>{‘encrypt’:[‘password’]}</td>
+</tr>
+<tr>
+<td>deviceMac</td>
+<td>50:8F:4C:FA:AA:3B</td>
+</tr>
+<tr>
+<td>deviceId</td>
+<td>866146033672761</td>
+</tr>
+</tbody>
+</table>
+<p><strong>password</strong>:加密后的密码，算法不知道，估计难拆，不过用作查询不需要拆</p>
+<p><strong>description</strong>:给服务端表明这份密码是加密过的</p>
+<p><strong>deviceMac</strong>:设备的mac地址，用作查询不需要改</p>
+<p><strong>deviceld</strong>:这个不知道…为什么不是id而是ld…</p>
+<h2 id="返回json">返回json</h2>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>	<span class="hljs-attr">&quot;errorCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-attr">&quot;errorInfo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;操作成功&quot;</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-attr">&quot;result&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>		<span class="hljs-attr">&quot;accountType&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;userCode&quot;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;clazzInfo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>			<span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;5423495a-22f6-4be8-97de-3d19206f4be7&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;gradeCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;11&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;graduated&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;4444000020000342148&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;高二年级4班&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;order&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">4</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;phase&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;05&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;phaseName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;高中&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;schoolId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2244000020000000338&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;year&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2017</span><br>		<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;createdBy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;zx&quot;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;currentloginType&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;zx&quot;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;customInfo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>			<span class="hljs-attr">&quot;simpleAndNormalVip&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;simpleVip&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;viewSummerHomework&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><br>		<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;hasOrg&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;4444000020022642541&quot;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;isAdmin&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;isInitialPwd&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;林黄骁&quot;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;preLoginDate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1542987371000</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;student&quot;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;roles&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;student&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;serverInfo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>			<span class="hljs-attr">&quot;curServerTime&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1542987504466</span><br>		<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;token&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;63db0c7d-b13f-4300-a643-16bad50cd221&quot;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;userInfo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>			<span class="hljs-attr">&quot;birthday&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1503244800000</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;38268068&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;email&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;gender&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;4444000020022642541&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;im&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;loginName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;zx38268068&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;mobile&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;13950383863&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;林黄骁&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;school&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;areaId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1267&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;cityId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1263&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;countryId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;districtId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1267&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;phase&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;05&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;provinceId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1262&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;schoolCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1003&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;schoolId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2244000020000000338&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;schoolName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;福建省福州八中&quot;</span><br>			<span class="hljs-punctuation">&#125;</span><br>		<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;vipInfo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>			<span class="hljs-attr">&quot;hidden&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;vipBeginTime&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1509206400000</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;vipEndTime&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1540828799000</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;vipLevel&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><br>		<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;virtualTagInfo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>			<span class="hljs-attr">&quot;areaName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;cityId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;cityName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;districtId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;districtName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;needAreaPop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;needGradePop&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;nickName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;provinceId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;provinceName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;roleTag&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><br>		<span class="hljs-punctuation">&#125;</span><br>	<span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<p>此处的token=63db0c7d-b13f-4300-a643-16bad50cd221会发现基本所有的接口都需要这个token作为一个验证参数</p>
+<h1>查询</h1>
+<h2 id="接口API-2">接口API</h2>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs apache"><br><br><span class="hljs-attribute">GET</span><br><br><span class="hljs-attribute">http</span>://app.zhixue.com/study/social/getGuessScore?&amp;examId=f899e9d4-db72-<span class="hljs-number">4</span>fad-<span class="hljs-number">96</span>ea-<span class="hljs-number">307</span>b15d4896b&amp;guessUserId=<span class="hljs-number">4444000020022642815</span>&amp;token=f867f8c8-fb39-<span class="hljs-number">4</span>de6-<span class="hljs-number">8188</span>-e65ccd1565bc&amp;childrenId=<span class="hljs-number">4444000020022642541</span><br><br><span class="hljs-attribute">http</span>://app.zhixue.com/study/social/getGuessScore?&amp;examId=<span class="hljs-number">911973</span>c8-<span class="hljs-number">750</span>d-<span class="hljs-number">4</span>bd2-<span class="hljs-number">9037</span>-<span class="hljs-number">32</span>eb60904012&amp;guessUserId=<span class="hljs-number">4444000020022642389</span>&amp;token=e5295e82-<span class="hljs-number">6684</span>-<span class="hljs-number">44</span>e5-a2f9-<span class="hljs-number">7</span>f25c64ae0c1&amp;childrenId=<span class="hljs-number">4444000020022642541</span><br><br><span class="hljs-attribute">http</span>://app.zhixue.com/study/social/getGuessScore?&amp;examId=&#123;exam_id&#125;&amp;guessUserId=&#123;userid&#125;&amp;token=&#123;token&#125;&amp;childrenId=&#123;userid_myself&#125;<br><br></code></pre></td></tr></table></figure>
+<h2 id="参数分析">参数分析</h2>
+<p><strong>examId</strong>：考试ID，已经可以抓到</p>
+<p><strong>guessUserId</strong>：伴学的ID，不需要添加为好友</p>
+<p><strong>token</strong>：智学网APP账户钥匙，与登录的保持一致</p>
+<p><strong>childrenId</strong>：自己的智学网ID</p>
+<h2 id="缺陷">缺陷</h2>
+<p>需要VIP账号，不然有次数限制</p>
+<h2 id="返回json-2">返回json</h2>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>	<span class="hljs-attr">&quot;errorCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-attr">&quot;errorInfo&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;操作成功&quot;</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-attr">&quot;result&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>		<span class="hljs-attr">&quot;customForbidDTO&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>			<span class="hljs-attr">&quot;user_Ratio_To_Level&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;user_Score_To_Level&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;forbid_Class_Rank&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;forbid_Grade_Rank&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;forbid_Union_Rank&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;forbid_Class_AvgScore&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;forbid_Grade_AvgScore&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;forbid_Union_AvgScore&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;forbid_Class_HighScore&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;forbid_Grade_HighScore&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;forbid_Union_HighScore&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;forbid_Origin_Paper&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;forbid_Score_PK&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;show_Intelligent_Correct&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;show_UserLevel&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;show_Score_Distribution&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;show_WrongTopic_Training&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><br>		<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>		<span class="hljs-attr">&quot;studentPKDTOs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><br>			<span class="hljs-attr">&quot;userId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;4444000020022642541&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;avatar&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;林黄骁&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;subjectList&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;subjectCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;subjectName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;总分&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">215.0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;classPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;gradePercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><br>			<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;subjectCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;14&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;subjectName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;地理&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">76.5</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;classPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;gradePercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><br>			<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;subjectCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;12&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;subjectName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;历史&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">69.5</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;classPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;gradePercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><br>			<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;subjectCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;27&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;subjectName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;政治&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">69.0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;classPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;gradePercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><br>			<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;isFriend&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;isSelf&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;isVip&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><br>		<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">&#123;</span><br>			<span class="hljs-attr">&quot;userId&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;4444000020022642535&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;avatar&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;杨宸杰&quot;</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;subjectList&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;subjectCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;subjectName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;总分&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">171.5</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;classPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;gradePercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><br>			<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;subjectCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;14&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;subjectName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;地理&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">64.0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;classPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;gradePercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><br>			<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;subjectCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;12&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;subjectName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;历史&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">63.5</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;classPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;gradePercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><br>			<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span> <span class="hljs-punctuation">&#123;</span><br>				<span class="hljs-attr">&quot;subjectCode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;27&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;subjectName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;政治&quot;</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">44.0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;classPercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>				<span class="hljs-attr">&quot;gradePercent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><br>			<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;isFriend&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;isSelf&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>			<span class="hljs-attr">&quot;isVip&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><br>		<span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">]</span><br>	<span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<h1>2018.12.23</h1>
+<h2 id="前言">前言</h2>
+<p>大概是一周前，应该是我生日前一天，智学网对上文提到的接口api添加了协议头验证，扒出来是加了这个验证也花了挺多时间，然后顺便也解决了我三个月前的一个web端疑问，web端有几个api总是提示参数缺失，而提交的数据和cookie都没有什么问题。</p>
+<h2 id="协议头HTTP-HEADER">协议头HTTP HEADER</h2>
+<p>首先扒出来了他的协议头：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs html">POST /container/app/weakCheckLogin? HTTP/1.1<br>deviceId: 866146033672761<br>browserVersion: Android_1.8.1595<br>channelId: Android_11010005<br>deviceMac: 50:8F:4C:FA:AA:3B<br>resolution: 1920*1080<br>authbizcode: 0001<br>authguid: 4ff59b11-eb56-4614-b6f5-2bfa889d4d40<br>authtimestamp: 1545492288739<br>authtoken: 8e59161b459405c5b7c48006c0d8b426<br>Content-Length: 168<br>Content-Type: application/x-www-form-urlencoded<br>Host: www.zhixue.com<br>Cookie: tlsysSessionId=bc887c7f-6626-46a7-906a-9dab53f17211; __DAYU_PP=fE7YI3jmfneyaq6NMmma43a9dc4cbb04; JSESSIONID=0EF8C11939B7BD9E5C459E2DD17F4B59<br>Cookie2: $Version=1<br>Accept-Encoding: gzip<br>Connection: keep-alive<br></code></pre></td></tr></table></figure>
+<p>经过一波分析和实验，得出智学网其实只是验证了这三个参数</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">authguid</span>: <span class="hljs-number">4</span>ff59b11-eb56-<span class="hljs-number">4614</span>-b6f5-<span class="hljs-number">2</span>bfa889d4d40<br><span class="hljs-attribute">authtimestamp</span>: <span class="hljs-number">1545492288739</span> //<span class="hljs-number">13</span>位时间戳，精确到毫秒<br><span class="hljs-attribute">authtoken</span>: <span class="hljs-number">8</span>e59161b459405c5b7c48006c0d8b426<br></code></pre></td></tr></table></figure>
+<p>很头大，中间花了一个多小时找这三个参数来源，最后发现，这个应该是实时生成的，每一次请求这三个都不一样</p>
+<p>但是手机端又不会给出加密算法，只能靠电脑端了</p>
+<p>还好这个加密算法被封进了app.js</p>
+<h2 id="app-js">app.js</h2>
+<p>从google dev-tools里面扒拉出来的，不知道为什么charles没有扒拉出这个…很玄吧</p>
+<h3 id="AuthGUID">AuthGUID</h3>
+<p>关于对guid生成的算法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> t = [], e = <span class="hljs-number">0</span>; e &lt; <span class="hljs-number">36</span>; e++) <span class="hljs-comment">//一共取36位</span><br>t[e] = <span class="hljs-string">&quot;0123456789abcdef&quot;</span>.<span class="hljs-title function_">substr</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(<span class="hljs-number">16</span> * <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>()), <span class="hljs-number">1</span>); <br><span class="hljs-comment">//随机0-1，相乘，取不大于这个数的最大整数</span><br><br><span class="hljs-keyword">return</span> t[<span class="hljs-number">14</span>] = <span class="hljs-string">&quot;4&quot;</span>, <span class="hljs-comment">//14位强行替换为4，参照结果来看这是一个事实</span><br>t[<span class="hljs-number">19</span>] = <span class="hljs-string">&quot;0123456789abcdef&quot;</span>.<span class="hljs-title function_">substr</span>(<span class="hljs-number">3</span> &amp; t[<span class="hljs-number">19</span>] | <span class="hljs-number">8</span>, <span class="hljs-number">1</span>), <span class="hljs-comment">//第19位进行与或</span><br><span class="hljs-comment">//从代码上看我怎么感觉只能取出8,9,10,11位的数..一定是错觉</span><br>t[<span class="hljs-number">8</span>] = t[<span class="hljs-number">13</span>] = t[<span class="hljs-number">18</span>] = t[<span class="hljs-number">23</span>] = <span class="hljs-string">&quot;-&quot;</span>, <span class="hljs-comment">//这里进行替换，强行改成-</span><br>t.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;&quot;</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs maxima">结果：<br><span class="hljs-number">012345678901234567890123456789012345</span> //位数对照<br>f0e39247-<span class="hljs-number">054b-4042</span>-<span class="hljs-number">9382</span>-38511c3b2060<br>4ff59b11-eb56-<span class="hljs-number">4614</span>-b6f5-2bfa889d4d40<br></code></pre></td></tr></table></figure>
+<p>这里已经算出来guid了</p>
+<h1>AuthToken</h1>
+<p>这个算法很奇怪，这是里面的一部分，或者就是全部的代码吧？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title function_">webpackJsonp</span>([<span class="hljs-number">1</span>], &#123;<br>    <span class="hljs-string">&quot;+BTi&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-string">&quot;+ECs&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-string">&quot;0RHc&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-string">&quot;150l&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-string">&quot;1zUs&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-string">&quot;2aH0&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;<br>            t.<span class="hljs-property">exports</span> = <span class="hljs-string">&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAgCAMAAADZqYNOAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTMwMjYyMUZGM0FFMTFFODg3OTFGNzlFNjAwQ0ZENjkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTMwMjYyMUVGM0FFMTFFODg3OTFGNzlFNjAwQ0ZENjkiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjIyN0FGNEQ3NTI1ODExRTZBMzg2RjlDRjg2RkI0NUY1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjIyN0FGNEQ4NTI1ODExRTZBMzg2RjlDRjg2RkI0NUY1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+NRPJrwAAAJ9QTFRFrOrkiuLZm+bf4vj1et7Up+niHse2B8GvkeTbXdfLieLZFMWz0/Txte3nMcy82PXyuu7ptu3n1vXy6vr4n+fg9f385vn3t+3o8Pv63fb0tOznHce20PPwSNLE8fz7yPHtyfLusezmX9fLH8i3oejhvu/qwO/rCMKvXtfL7/v6guDWXNfK8/z73Pb0revk5/n3qerj7fv5BsGuBcGu////VYK8ngAAADV0Uk5T/////////////////////////////////////////////////////////////////////wB8tdAKAAAAtklEQVR42qzT2Q7CIBAF0IFSqGutW9W27vuuw/9/mzFVHqAlJXofOcllQgaQtkAVXQrUI/ZKd2hGKEU0Wt9HH80ymxYk15gbN/JYKS8YiCstGaiqdgmZTkhfBmQ2JqSnqY/o1bAtG1hvITY19QAGc+jIBYRDgJGmF0rPG3qVa5p6lD6cmu1T2e+1N6eMHe4skEe2DRm7Ob3Vf9X/7lWZPk+25nyff9GivUqURomBq8jll5XkJcAA89Ooa6nFvYgAAAAASUVORK5CYII=&quot;</span><br>    &#125;,<br>    <span class="hljs-string">&quot;3JRO&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;<br>            t.<span class="hljs-property">exports</span> = <span class="hljs-string">&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAgCAMAAADZqYNOAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTMwMjYyMjNGM0FFMTFFODg3OTFGNzlFNjAwQ0ZENjkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTMwMjYyMjJGM0FFMTFFODg3OTFGNzlFNjAwQ0ZENjkiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjIyN0FGNEQ3NTI1ODExRTZBMzg2RjlDRjg2RkI0NUY1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjIyN0FGNEQ4NTI1ODExRTZBMzg2RjlDRjg2RkI0NUY1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+5kDDrQAAAYBQTFRFVdXIQdDBPc/AK8q6G8a1FsWz8Pv6+/7+BsGuM8y90/Tx+P39yfLuqOnj7Pr5RNHCCMKvw/DsPs/ALcu7UNPGD8OxiuLZGMa0EMSxte3net7UT9PGF8W0EcSys+zm+v79DMOw6vr4uO3of9/VbdvQOs6/wO/rW9bKeN3T+f79Lsu70fTwDcOxtO3n9v38CcKv/f/+rOrkWNbJv+/qwfDrHse2ZdnN8/z7LMu7/P7+8vz77vv67/v6dd3Sq+rk5Pj29/38b9vQbtvQJ8q51/Xy4Pf1YNjMH8i3l+Xddt3T2fbzhuHYN82+c9zSp+niC8KwP8/BXNfKi+La5fj2zfPvxvHt9Pz8gN/W5/n37fv5nufgTNPFIsi4vO7p8fz7m+bfRtHDIci3EsSyMcy8yPHtsezmSdLEfd/VguDWcNzRB8GvJMm42vbzRdHDOc6/oOfg6fr4zPLu3Pb0Msy9e97UTtPGft/VieLZWdbJ3fb01vXyO86/luXdiOLZBcGu////avyEswAAAIB0Uk5T/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wA4BUtnAAABlklEQVR42qyTV1cCMRCFUWCX6tJ7l6KAKB0Eexd77x1773Xy10123UM8lhedl71zv5Pck81Egn4ryZ9oymqy6NW0p9ZbnNaIQIGUz+DwNJB+2eMw+IijEKk2qDwmvfHOaVRgoVP2agFEij9MoJGzkSVmrjHAYIOi/J7IqwHQeHnZQFP5zXhLu7igXD2KrtFUirdsNXQRGQvpcBOiKRodlrhARaQdZI+bT59yu7FomysTORsjbjdNZVxlnhVzm/WHdX00HcJRO6YlIp9XycGiNGX3KmdxMde8b7kq0rQNi8Q6f8iBsPDLKXoiee2vWWymqUBTF47KDvp5ayIixx2RzL1A8/YOpULIJVfmmtaiZLJ5q168BYT8nZe8LDRlWN7Iua9rtJYr1ANcoB9pVZFCX2mLilca83bpG2pq7cgj1JXVhdE3tDQG2U5mF26RSDUslcu8AFjh3PtB3QA2bjGw8UHVzBSA+1Sc53TOCPwg9uBBPJA6UHsdrNBvwe8ZMUyCUPUILcx8eSkJ/ZvTFw+mi//1yt4FGAAD3X9yTjfCbwAAAABJRU5ErkJggg==&quot;</span><br>    &#125;,<br>    <span class="hljs-string">&quot;6atI&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-string">&quot;7XQ6&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-string">&quot;8XQW&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-string">&quot;9RkD&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e, s</span>) &#123;<br>            t.<span class="hljs-property">exports</span> = s.<span class="hljs-property">p</span> + <span class="hljs-string">&quot;static/img/composition-banner.24153ed.png&quot;</span><br>    &#125;,<br>    <span class="hljs-title class_">CCWw</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-title class_">EyqX</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-title class_">FGfq</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-title class_">HQok</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-attr">I4nB</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-string">&quot;It+H&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-attr">JGNI</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-attr">KTGR</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;<br>            t.<span class="hljs-property">exports</span> = <span class="hljs-string">&quot;data:image/png;base64,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&quot;</span><br>    &#125;,<br>    <span class="hljs-string">&quot;KqW/&quot;</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;<br>            t.<span class="hljs-property">exports</span> = <span class="hljs-string">&quot;data:image/png;base64,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&quot;</span><br>    &#125;,<br>    <span class="hljs-title class_">Lrnc</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e</span>) &#123;&#125;,<br>    <span class="hljs-title class_">NHnr</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">t, e, s</span>) &#123;<br>            <span class="hljs-string">&quot;use strict&quot;</span>;<br>            <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">defineProperty</span>(e, <span class="hljs-string">&quot;__esModule&quot;</span>, &#123;<br>                    <span class="hljs-attr">value</span>: !<span class="hljs-number">0</span><br>            &#125;);<br>            <span class="hljs-keyword">var</span> a = <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;7+uW&quot;</span>),<br>            i = &#123;<br>                    <span class="hljs-attr">render</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>                            <span class="hljs-keyword">var</span> t = <span class="hljs-variable language_">this</span>.<span class="hljs-property">$createElement</span>,<br>                            e = <span class="hljs-variable language_">this</span>.<span class="hljs-property">_self</span>.<span class="hljs-property">_c</span> || t;<br>                            <span class="hljs-keyword">return</span> <span class="hljs-title function_">e</span>(<span class="hljs-string">&quot;div&quot;</span>, &#123;<br>                                    <span class="hljs-attr">staticClass</span>: <span class="hljs-string">&quot;app&quot;</span>,<br>                                    <span class="hljs-attr">attrs</span>: &#123;<br>                                            <span class="hljs-attr">id</span>: <span class="hljs-string">&quot;app&quot;</span><br>                                    &#125;<br>                            &#125;,<br>                            [<span class="hljs-title function_">e</span>(<span class="hljs-string">&quot;router-view&quot;</span>)], <span class="hljs-number">1</span>)<br>                    &#125;,<br>                    <span class="hljs-attr">staticRenderFns</span>: []<br>            &#125;;<br>            <span class="hljs-keyword">var</span> n = <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;VU/8&quot;</span>)(&#123;<br>                    <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;App&quot;</span>,<br>                    <span class="hljs-attr">data</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>                            <span class="hljs-keyword">return</span> &#123;<br>                                    <span class="hljs-attr">aaa</span>: <span class="hljs-number">111</span><br>                            &#125;<br>                    &#125;,<br>                    <span class="hljs-attr">created</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;&#125;,<br>                    <span class="hljs-attr">methods</span>: &#123;&#125;<br>            &#125;,<br>            i, !<span class="hljs-number">1</span>,<br>            <span class="hljs-keyword">function</span>(<span class="hljs-params">t</span>) &#123;<br>                    <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;rueH&quot;</span>)<br>            &#125;,<br>            <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>).<span class="hljs-property">exports</span>,<br>            r = <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;/ocq&quot;</span>),<br>            o = (<span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;Yq4J&quot;</span>), <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;+BTi&quot;</span>), <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;qubY&quot;</span>)),<br>            l = s.<span class="hljs-title function_">n</span>(o),<br>            c = <span class="hljs-keyword">new</span> a.<span class="hljs-property">default</span>,<br>            h = (<span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;I4nB&quot;</span>), <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;STLj&quot;</span>)),<br>            u = s.<span class="hljs-title function_">n</span>(h),<br>            d = (<span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;cDSy&quot;</span>), <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;e0Bm&quot;</span>)),<br>            f = s.<span class="hljs-title function_">n</span>(d),<br>            p = <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;//Fk&quot;</span>),<br>            v = s.<span class="hljs-title function_">n</span>(p),<br>            m = <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;mtWM&quot;</span>),<br>            g = s.<span class="hljs-title function_">n</span>(m),<br>            b = <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;Zrlr&quot;</span>),<br>            w = s.<span class="hljs-title function_">n</span>(b),<br>            S = <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;wxAW&quot;</span>),<br>            C = s.<span class="hljs-title function_">n</span>(S),<br>            x = <span class="hljs-title function_">s</span>(<span class="hljs-string">&quot;NC6I&quot;</span>),<br>            y = s.<span class="hljs-title function_">n</span>(x),<br>            A = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>                    <span class="hljs-keyword">function</span> <span class="hljs-title function_">t</span>(<span class="hljs-params">e, s, a</span>) &#123;<br>                            <span class="hljs-title function_">w</span>()(<span class="hljs-variable language_">this</span>, t),<br>                            <span class="hljs-variable language_">this</span>.<span class="hljs-property">bicode</span> = e,<br>                            <span class="hljs-variable language_">this</span>.<span class="hljs-property">password</span> = s,<br>                            <span class="hljs-variable language_">this</span>.<span class="hljs-property">timeDifference</span> = a<br>                    &#125;<br>                    <span class="hljs-keyword">return</span> <span class="hljs-title function_">C</span>()(t, [&#123;<br>                            <span class="hljs-attr">key</span>: <span class="hljs-string">&quot;guid&quot;</span>,<br>                            <span class="hljs-attr">value</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>                                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> t = [], e = <span class="hljs-number">0</span>; e &lt; <span class="hljs-number">36</span>; e++) t[e] = <span class="hljs-string">&quot;0123456789abcdef&quot;</span>.<span class="hljs-title function_">substr</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(<span class="hljs-number">16</span> * <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>()), <span class="hljs-number">1</span>);<br>                                    <span class="hljs-keyword">return</span> t[<span class="hljs-number">14</span>] = <span class="hljs-string">&quot;4&quot;</span>,<br>                                    t[<span class="hljs-number">19</span>] = <span class="hljs-string">&quot;0123456789abcdef&quot;</span>.<span class="hljs-title function_">substr</span>(<span class="hljs-number">3</span> &amp; t[<span class="hljs-number">19</span>] | <span class="hljs-number">8</span>, <span class="hljs-number">1</span>),<br>                                    t[<span class="hljs-number">8</span>] = t[<span class="hljs-number">13</span>] = t[<span class="hljs-number">18</span>] = t[<span class="hljs-number">23</span>] = <span class="hljs-string">&quot;-&quot;</span>,<br>                                    t.<span class="hljs-title function_">join</span>(<span class="hljs-string">&quot;&quot;</span>)<br>                            &#125;<br>                    &#125;,<br>                    &#123;<br>                            <span class="hljs-attr">key</span>: <span class="hljs-string">&quot;getDateString&quot;</span>,<br>                            <span class="hljs-attr">value</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>                                    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>).<span class="hljs-title function_">getTime</span>()<br>                            &#125;<br>                    &#125;,<br>                    &#123;<br>                            <span class="hljs-attr">key</span>: <span class="hljs-string">&quot;make&quot;</span>,<br>                            <span class="hljs-attr">value</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>                                    <span class="hljs-keyword">var</span> t = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">guid</span>(),<br>                                    e = <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">getDateString</span>() - <span class="hljs-variable language_">this</span>.<span class="hljs-property">timeDifference</span>,<br>                                    s = t + e + <span class="hljs-variable language_">this</span>.<span class="hljs-property">password</span>,<br>                                    a = <span class="hljs-title function_">y</span>()(s);<br>                                    <span class="hljs-keyword">return</span> &#123;<br>                                            <span class="hljs-attr">authguid</span>: t,<br>                                            <span class="hljs-attr">authtimestamp</span>: e,<br>                                            <span class="hljs-attr">authbizcode</span>: <span class="hljs-variable language_">this</span>.<span class="hljs-property">bicode</span>,<br>                                            <span class="hljs-attr">authtokenOrigin</span>: s,<br>                                            <span class="hljs-attr">authtoken</span>: a<br>                                    &#125;<br>                            &#125;<br>                    &#125;]),<br>                    t<br>            &#125; (),<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HTTP/">#HTTP</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/a8ee19d5da2b/" title="STL基本容器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">STL基本容器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/40e0e0a573ca/" title="安全教育平台完成脚本">
+                        <span class="hidden-mobile">安全教育平台完成脚本</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('mermaid' in window) {
+        mermaid.init();
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       © OZLIINEX Proudly published with <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> Theme <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      闽ICP备2021014966号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35010202001466"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="https://files.ozline.icu/images/ghs.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>闽公网安备35010202001466号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

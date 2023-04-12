@@ -1,0 +1,751 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://files.ozline.icu/images/site.ico">
+  <link rel="icon" href="https://files.ozline.icu/images/site.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="OZLIINEX">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="西二在线Golang组的11月考核有一个提高任务，是爬取何同学某一个视频的评论并且使用mysql储存，这里单独写一篇文章来记录编写过程中的一些事 相关API 使用Porxyman抓包后，可以轻松拿到两个API： 主评论： https:&#x2F;&#x2F;api.bilibili.com&#x2F;x&#x2F;v2&#x2F;reply&#x2F;main?jsonp&#x3D;jsonp&amp;next&#x3D;【pages】&amp;type&#x3D;1&amp;oid&#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DFS实现Bilibili视频评论爬虫">
+<meta property="og:url" content="https://ozline.icu/764abdf3a7b4/index.html">
+<meta property="og:site_name" content="OZLIINEX&#39;s Blog">
+<meta property="og:description" content="西二在线Golang组的11月考核有一个提高任务，是爬取何同学某一个视频的评论并且使用mysql储存，这里单独写一篇文章来记录编写过程中的一些事 相关API 使用Porxyman抓包后，可以轻松拿到两个API： 主评论： https:&#x2F;&#x2F;api.bilibili.com&#x2F;x&#x2F;v2&#x2F;reply&#x2F;main?jsonp&#x3D;jsonp&amp;next&#x3D;【pages】&amp;type&#x3D;1&amp;oid&#x3D;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-14T17:29:43.000Z">
+<meta property="article:modified_time" content="2021-12-21T17:42:50.000Z">
+<meta property="article:author" content="OZLIINEX">
+<meta property="article:tag" content="golang">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>DFS实现Bilibili视频评论爬虫 - OZLIINEX&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ozline.icu","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":202181,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- 51.la Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('//js.users.51.la/202181.js');
+      }
+    </script>
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="OZLIINEX's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>OZLIINEX&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://files.ozline.icu/images/BannerImg.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DFS实现Bilibili视频评论爬虫"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2021-11-14 17:29" pubdate>
+          2021年11月14日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          66 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">DFS实现Bilibili视频评论爬虫</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>西二在线Golang组的11月考核有一个提高任务，是爬取何同学某一个视频的评论并且使用mysql储存，这里单独写一篇文章来记录编写过程中的一些事</p>
+<h2 id="相关API">相关API</h2>
+<p>使用Porxyman抓包后，可以轻松拿到两个API：</p>
+<p>主评论：</p>
+<p><code>https://api.bilibili.com/x/v2/reply/main?jsonp=jsonp&amp;next=【pages】&amp;type=1&amp;oid=【OID】&amp;mode=【mode】&amp;plat=1&amp;_=【timestamp】</code></p>
+<p>楼中楼：</p>
+<p><code>https://api.bilibili.com/x/v2/reply/reply?&amp;jsonp=jsonp&amp;pn=【pages】&amp;type=1&amp;oid=【OID】&amp;ps=【num】&amp;root=【父评论ID】&amp;_=【timestamp】</code></p>
+<p>跟大多数网站的api一样，这个timestamp可以不提交，毕竟核查时间戳很浪费资源，但是bilibili并不是完全没有审查请求，它会在请求过多的时候拒绝返回数据（返回错误码-412），这个频率测试下来是不能小于0.5秒</p>
+<p>这里的pages对应b站显示评论的一个机制，b站在下拉读取评论的过程中<strong>只会十条十条的读取</strong>，也就是说你拉到底部它才会继续加载更多的评论，不会一口气把评论都读完，而子评论也是如此，但是子评论有个更灵活的ps参数，你可以控制它返回多少子评论，但也有个上限，<strong>最多返回20条</strong>，其他就得“翻页”了</p>
+<h2 id="爬虫逻辑">爬虫逻辑</h2>
+<p>当爬虫爬取了一条评论后，爬虫会穷尽这条评论下的所有子评论后，才会继续读取下一条评论，而主评论的排序方式以热门程度为序，b站对返回评论有三种模式，也就是主评论API中的mode参数，1=评论，2=最新评论，3=热门评论，因此程序会逐渐爬完所有的评论，并存进数据库</p>
+<h2 id="数据库结构">数据库结构</h2>
+<p>以BV作为每个表的ID，rpid作为主键</p>
+<table>
+<thead>
+<tr>
+<th>rpid</th>
+<th>mid</th>
+<th>root</th>
+<th>parent</th>
+<th>rcount</th>
+<th>ctime</th>
+<th>like</th>
+<th>uname</th>
+<th>message</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>评论ID</td>
+<td>用户ID</td>
+<td>根评论ID</td>
+<td>父评论ID</td>
+<td>子楼个数</td>
+<td>时间戳</td>
+<td>点赞数</td>
+<td>昵称</td>
+<td>内容</td>
+</tr>
+</tbody>
+</table>
+<h2 id="代码实现">代码实现</h2>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br>	<span class="hljs-string">&quot;database/sql&quot;</span><br>	<span class="hljs-string">&quot;fmt&quot;</span><br>	<span class="hljs-string">&quot;io/ioutil&quot;</span><br>	<span class="hljs-string">&quot;net/http&quot;</span><br>	<span class="hljs-string">&quot;strconv&quot;</span><br>	<span class="hljs-string">&quot;strings&quot;</span><br>	<span class="hljs-string">&quot;time&quot;</span><br><br>	_ <span class="hljs-string">&quot;github.com/go-sql-driver/mysql&quot;</span><br>	<span class="hljs-string">&quot;github.com/jsonparser&quot;</span><br>)<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">思路：</span><br><span class="hljs-comment">获取到b站评论api以后，主要的内容其实就是对json进行文本操作了，整个过程是递推过程</span><br><span class="hljs-comment">唯一使用goroutine的地方是向数据库提交数据，其余均不能使用goroutine，b站服务器会检测频率</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">会导致程序运行停止的地方：</span><br><span class="hljs-comment">1.连接数据库时连接失败</span><br><span class="hljs-comment">2.提交数据时数据库返回错误结果亦或是提交失败，避免浪费资源</span><br><span class="hljs-comment">3.关闭数据库时关闭失败</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">正常进行程序就已经会导致被服务器临时ban，解决方法是强行放慢进度</span><br><span class="hljs-comment">目前是在主评论之间加1秒间隔，子评论之间加0.5秒间隔</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">*/</span><br><br><span class="hljs-keyword">const</span> (<br>	userName = <span class="hljs-string">&quot;username&quot;</span><br>	passWord = <span class="hljs-string">&quot;password&quot;</span><br>	ip       = <span class="hljs-string">&quot;database-ip&quot;</span><br>	port           = <span class="hljs-string">&quot;port&quot;</span><br>	dbName         = <span class="hljs-string">&quot;dbname&quot;</span><br>	bv             = <span class="hljs-string">&quot;bv1f4411m7qc&quot;</span><br>	oid            = <span class="hljs-string">&quot;54737593&quot;</span><br>	api_main       = <span class="hljs-string">&quot;https://api.bilibili.com/x/v2/reply/main?jsonp=jsonp&amp;next=[page]&amp;type=1&amp;oid=[oid]&amp;mode=3&amp;plat=1&amp;_[timestamp]&quot;</span>      <span class="hljs-comment">//爬取评论API</span><br>	api_son        = <span class="hljs-string">&quot;https://api.bilibili.com/x/v2/reply/reply?&amp;jsonp=jsonp&amp;pn=[page]&amp;type=1&amp;oid=[oid]&amp;ps=20&amp;root=[root]&amp;_=[timestamp]&quot;</span> <span class="hljs-comment">//爬取楼中楼API</span><br>	maxWorkerCount = <span class="hljs-number">64</span><br>)<br><br><span class="hljs-keyword">type</span> commentInfo <span class="hljs-keyword">struct</span> &#123;<br>	rpid    <span class="hljs-type">int64</span>  <span class="hljs-comment">//评论ID</span><br>	mid     <span class="hljs-type">int64</span>  <span class="hljs-comment">//用户ID</span><br>	root    <span class="hljs-type">int64</span>  <span class="hljs-comment">//根楼</span><br>	parent  <span class="hljs-type">int64</span>  <span class="hljs-comment">//父楼</span><br>	rcount  <span class="hljs-type">int64</span>  <span class="hljs-comment">//有效楼中楼数量</span><br>	ctime   <span class="hljs-type">int64</span>  <span class="hljs-comment">//11位时间戳</span><br>	like    <span class="hljs-type">int64</span>  <span class="hljs-comment">//点赞人数</span><br>	uname   <span class="hljs-type">string</span> <span class="hljs-comment">//昵称</span><br>	message <span class="hljs-type">string</span> <span class="hljs-comment">//评论内容</span><br>	<span class="hljs-comment">//我之前一直在想，为什么b站评论没有显示不喜欢的人数，没想到是数据库压根没存，还是api读取的时候不返回？</span><br>&#125;<br><br><span class="hljs-keyword">var</span> db *sql.DB<br><span class="hljs-keyword">var</span> code <span class="hljs-type">int64</span><br><br><span class="hljs-keyword">var</span> workerCount = <span class="hljs-number">0</span><br><span class="hljs-keyword">var</span> solveRequest = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> commentInfo)<br><span class="hljs-keyword">var</span> workerDone = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">bool</span>)<br><span class="hljs-keyword">var</span> doneCounter = <span class="hljs-number">0</span><br><span class="hljs-keyword">var</span> haveSolved = <span class="hljs-literal">false</span><br><span class="hljs-keyword">var</span> start time.Time<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">waitForWorkers</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">for</span> &#123;<br>		<span class="hljs-keyword">select</span> &#123;<br>		<span class="hljs-keyword">case</span> info := &lt;-solveRequest:<br>			workerCount++<br>			<span class="hljs-keyword">go</span> SubmitInfo(info, <span class="hljs-literal">true</span>)<br>		<span class="hljs-keyword">case</span> &lt;-workerDone:<br>			workerCount--<br>			doneCounter++<br>			fmt.Printf(<span class="hljs-string">&quot;\r已处理任务数量：%v&quot;</span>, strconv.Itoa(doneCounter))<br>			<span class="hljs-keyword">if</span> workerCount == <span class="hljs-number">0</span> &amp;&amp; haveSolved &#123;<br>				<span class="hljs-keyword">if</span> code == <span class="hljs-number">-412</span> &#123;<br>					fmt.Printf(<span class="hljs-string">&quot;\n\n程序异常结束：服务器拒绝访问&quot;</span>)<br>				&#125; <span class="hljs-keyword">else</span> &#123;<br>					fmt.Println(<span class="hljs-string">&quot;\n\n程序执行完毕 耗时：&quot;</span> + timeSolve(time.Since(start).String()))<br>				&#125;<br>				<span class="hljs-keyword">return</span><br>			&#125;<br>		&#125;<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">timeSolve</span><span class="hljs-params">(time <span class="hljs-type">string</span>)</span></span> <span class="hljs-type">string</span> &#123;<br>	keepNum := <span class="hljs-number">2</span>                            <span class="hljs-comment">//规划保留的小数点后位数</span><br>	dotIndex := strings.IndexAny(time, <span class="hljs-string">&quot;.&quot;</span>) <span class="hljs-comment">//获取小数点所在的索引值</span><br>	<span class="hljs-keyword">return</span> time[:dotIndex+keepNum+<span class="hljs-number">1</span>] + <span class="hljs-string">&quot;s&quot;</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">InitDB</span><span class="hljs-params">()</span></span> <span class="hljs-type">bool</span> &#123; <span class="hljs-comment">//连接RDS</span><br>	path := strings.Join([]<span class="hljs-type">string</span>&#123;userName, <span class="hljs-string">&quot;:&quot;</span>, passWord, <span class="hljs-string">&quot;@tcp(&quot;</span>, ip, <span class="hljs-string">&quot;:&quot;</span>, port, <span class="hljs-string">&quot;)/&quot;</span>, dbName, <span class="hljs-string">&quot;?charset=utf8&amp;parseTime=True&quot;</span>&#125;, <span class="hljs-string">&quot;&quot;</span>)<br>	db, _ = sql.Open(<span class="hljs-string">&quot;mysql&quot;</span>, path)<br>	db.SetConnMaxLifetime(<span class="hljs-number">100</span>)<br>	db.SetMaxIdleConns(<span class="hljs-number">10</span>)<br>	<span class="hljs-keyword">if</span> err := db.Ping(); err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">SubmitInfo</span><span class="hljs-params">(info commentInfo, a <span class="hljs-type">bool</span>)</span></span> &#123; <span class="hljs-comment">//提交数据 true=使用goroutine</span><br>	tx, err := db.Begin()<br>	<span class="hljs-comment">//panic(err)</span><br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	cmd := <span class="hljs-string">&quot;INSERT INTO `&quot;</span> + dbName + <span class="hljs-string">&quot;`.`&quot;</span> + bv + <span class="hljs-string">&quot;` (`rpid`,`mid`,`root`,`parent`,`rcount`,`ctime`,`like`,`uname`,`message`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)&quot;</span><br>	tmp, err := tx.Prepare(cmd)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	_, err = tmp.Exec(info.rpid, info.mid, info.root, info.parent, info.rcount, info.ctime, info.like, info.uname, info.message)<br>	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> &#123;<br>		tx.Commit()<br>	&#125;<br>	<span class="hljs-keyword">if</span> a &#123;<br>		workerDone &lt;- <span class="hljs-literal">true</span><br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		doneCounter++<br>	&#125;<br>	<span class="hljs-keyword">return</span><br><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">solveCommentProgress</span><span class="hljs-params">(data []<span class="hljs-type">byte</span>, dataType jsonparser.ValueType, offset <span class="hljs-type">int</span>, err <span class="hljs-type">error</span>)</span></span> &#123; <span class="hljs-comment">//处理评论</span><br>	<span class="hljs-keyword">var</span> info commentInfo<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>	<span class="hljs-keyword">if</span> dataType == jsonparser.Object &#123; <span class="hljs-comment">//数据类型正确，开始读取</span><br>		info.rpid, _ = jsonparser.GetInt(data, <span class="hljs-string">&quot;rpid&quot;</span>)<br>		info.mid, _ = jsonparser.GetInt(data, <span class="hljs-string">&quot;mid&quot;</span>)<br>		info.root, _ = jsonparser.GetInt(data, <span class="hljs-string">&quot;root&quot;</span>)<br>		info.parent, _ = jsonparser.GetInt(data, <span class="hljs-string">&quot;parent&quot;</span>)<br>		info.rcount, _ = jsonparser.GetInt(data, <span class="hljs-string">&quot;rcount&quot;</span>)<br>		info.ctime, _ = jsonparser.GetInt(data, <span class="hljs-string">&quot;ctime&quot;</span>)<br>		info.like, _ = jsonparser.GetInt(data, <span class="hljs-string">&quot;like&quot;</span>)<br>		info.uname, _ = jsonparser.GetString(data, <span class="hljs-string">&quot;member&quot;</span>, <span class="hljs-string">&quot;uname&quot;</span>)<br>		info.message, _ = jsonparser.GetString(data, <span class="hljs-string">&quot;content&quot;</span>, <span class="hljs-string">&quot;message&quot;</span>)<br>		<span class="hljs-keyword">if</span> workerCount &lt; maxWorkerCount &#123;<br>			solveRequest &lt;- info<br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			SubmitInfo(info, <span class="hljs-literal">false</span>)<br>		&#125;<br>		<span class="hljs-comment">//楼中楼判断</span><br>		_, tmp, _, _ := jsonparser.Get(data, <span class="hljs-string">&quot;replies&quot;</span>)<br>		<span class="hljs-keyword">if</span> tmp == jsonparser.Array &#123;<br>			sonProgress(info.rpid, oid)<br>		&#125;<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">getCommentData</span><span class="hljs-params">(url <span class="hljs-type">string</span>)</span></span> <span class="hljs-type">bool</span> &#123; <span class="hljs-comment">//获取并开始处理json</span><br>	<span class="hljs-comment">//构建请求</span><br>	req, err := http.NewRequest(<span class="hljs-string">&quot;GET&quot;</span>, url, <span class="hljs-literal">nil</span>) <span class="hljs-comment">//这个api对头文件检查不严格，实际上下面三个完全不需要</span><br>	req.Header.Add(<span class="hljs-string">&quot;User-Agent&quot;</span>, <span class="hljs-string">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36&quot;</span>)<br>	req.Header.Add(<span class="hljs-string">&quot;Referer&quot;</span>, <span class="hljs-string">&quot;https://www.bilibili.com/&quot;</span>)<br>	req.Header.Add(<span class="hljs-string">&quot;Content-Type&quot;</span>, <span class="hljs-string">&quot;application/json&quot;</span>)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>	&#125;<br>	<span class="hljs-comment">//发送请求</span><br>	resp, err := http.DefaultTransport.RoundTrip(req) <span class="hljs-comment">// 关闭自动重定向</span><br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>	&#125;<br>	<span class="hljs-comment">//提取data内容</span><br>	re, err := ioutil.ReadAll(resp.Body)<br>	resp.Body.Close()<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>	&#125;<br>	code, err = jsonparser.GetInt(re, <span class="hljs-string">&quot;code&quot;</span>)<br>	<span class="hljs-keyword">if</span> code == <span class="hljs-number">-412</span> &#123; <span class="hljs-comment">//请求过多，暂时不提供数据</span><br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span><br>	&#125;<br>	result, tmp, _, err := jsonparser.Get(re, <span class="hljs-string">&quot;data&quot;</span>)<br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>	&#125;<br>	_, tmp, _, _ = jsonparser.Get(result, <span class="hljs-string">&quot;replies&quot;</span>)<br>	<span class="hljs-keyword">if</span> tmp == jsonparser.Array &#123; <span class="hljs-comment">//存在则进行评论处理</span><br>		_, _ = jsonparser.ArrayEach(result, solveCommentProgress, <span class="hljs-string">&quot;replies&quot;</span>)<br>	&#125;<br>	<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">mainProgress</span><span class="hljs-params">()</span></span> &#123; <span class="hljs-comment">//处理主评论</span><br>	<span class="hljs-keyword">if</span> InitDB() &#123;<br>		fmt.Println(<span class="hljs-string">&quot;数据库连接成功\n&quot;</span>)<br>		<span class="hljs-keyword">defer</span> endProgress()<br>	&#125; <span class="hljs-keyword">else</span> &#123;<br>		fmt.Println(<span class="hljs-string">&quot;数据库连接失败\n&quot;</span>)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br><br>	start = time.Now()<br>	<span class="hljs-keyword">var</span> tmp <span class="hljs-type">int</span> = <span class="hljs-number">1</span><br>	<span class="hljs-keyword">for</span> &#123;<br>		<span class="hljs-comment">//地址预处理</span><br>		url := strings.ReplaceAll(api_main, <span class="hljs-string">&quot;[oid]&quot;</span>, oid)<br>		url = strings.ReplaceAll(url, <span class="hljs-string">&quot;[page]&quot;</span>, strconv.Itoa(tmp))<br>		url = strings.ReplaceAll(url, <span class="hljs-string">&quot;[timestamp]&quot;</span>, strconv.FormatInt(time.Now().UnixMilli(), <span class="hljs-number">10</span>))<br>		<span class="hljs-keyword">if</span> !getCommentData(url) || code == <span class="hljs-number">-412</span> &#123;<br>			<span class="hljs-keyword">break</span><br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			tmp++<br>		&#125;<br>		time.Sleep(time.Second)<br>	&#125;<br>	haveSolved = <span class="hljs-literal">true</span><br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">sonProgress</span><span class="hljs-params">(root <span class="hljs-type">int64</span>, oid <span class="hljs-type">string</span>)</span></span> &#123; <span class="hljs-comment">//处理子评论</span><br>	<span class="hljs-keyword">var</span> tmp <span class="hljs-type">int</span> = <span class="hljs-number">1</span><br>	<span class="hljs-keyword">for</span> &#123;<br>		<span class="hljs-comment">//地址预处理</span><br>		url := strings.ReplaceAll(api_son, <span class="hljs-string">&quot;[oid]&quot;</span>, oid)<br>		url = strings.ReplaceAll(url, <span class="hljs-string">&quot;[root]&quot;</span>, strconv.FormatInt(root, <span class="hljs-number">10</span>))<br>		url = strings.ReplaceAll(url, <span class="hljs-string">&quot;[page]&quot;</span>, strconv.Itoa(tmp))<br>		url = strings.ReplaceAll(url, <span class="hljs-string">&quot;[timestamp]&quot;</span>, strconv.FormatInt(time.Now().UnixMilli(), <span class="hljs-number">10</span>))<br>		<span class="hljs-keyword">if</span> !getCommentData(url) || code == <span class="hljs-number">-412</span> &#123;<br>			<span class="hljs-keyword">break</span><br>		&#125; <span class="hljs-keyword">else</span> &#123;<br>			tmp++<br>		&#125;<br>		time.Sleep(<span class="hljs-number">500000000</span>)<br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">endProgress</span><span class="hljs-params">()</span></span> &#123; <span class="hljs-comment">//程序结束时处理的内容</span><br>	err := db.Close() <span class="hljs-comment">//关闭数据库</span><br>	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> &#123;<br>		<span class="hljs-built_in">panic</span>(err)<br>		<span class="hljs-keyword">return</span><br>	&#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br>	<span class="hljs-keyword">go</span> mainProgress()<br>	waitForWorkers()<br>	<span class="hljs-keyword">return</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
+<h2 id="爬取逻辑">爬取逻辑</h2>
+<p>在这个程序中，爬虫采用DFS方法，如图，爬虫从上至下，从左至右遍历</p>
+<pre><code class=" mermaid">graph LR
+A[程序开始]--&gt;B[读取第1页文章列表]
+A--&gt;D[...]
+A--&gt;E[读取第N页文章列表]
+B--&gt;F[解析第1个文章]
+B--&gt;J[...]
+B--&gt;K[解析第N个文章]
+E--&gt;M[...]
+</code></pre>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/golang/">#golang</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/a6579764190c/" title="【题解】CodeForces-936A SAVE ENERGY!">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【题解】CodeForces-936A SAVE ENERGY!</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/aac2d8e6bc14/" title="并查集">
+                        <span class="hidden-mobile">并查集</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('mermaid' in window) {
+        mermaid.init();
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       © OZLIINEX Proudly published with <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> Theme <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      闽ICP备2021014966号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35010202001466"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="https://files.ozline.icu/images/ghs.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>闽公网安备35010202001466号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

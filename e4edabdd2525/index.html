@@ -1,0 +1,1859 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://files.ozline.icu/images/site.ico">
+  <link rel="icon" href="https://files.ozline.icu/images/site.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="OZLIINEX">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="HPL性能调优 环境 Ubuntu22.04 插电状态 笔记本关闭显示,不进入休眠,注销用户,在其他电脑上利用ssh连接 RAM:16G DDR3 CPU: i7-4980HQ 2.8Ghz 核心数:4 线程数:8 性能影响   vscode-server的ssh远程编程进程可能会对性能有影响   ssh的连接会影响性能   实验过程中,开启NextSSH软件中的数据监看功能,实时监测cpu、内存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HPL本机性能调优分析">
+<meta property="og:url" content="https://ozline.icu/e4edabdd2525/index.html">
+<meta property="og:site_name" content="OZLIINEX&#39;s Blog">
+<meta property="og:description" content="HPL性能调优 环境 Ubuntu22.04 插电状态 笔记本关闭显示,不进入休眠,注销用户,在其他电脑上利用ssh连接 RAM:16G DDR3 CPU: i7-4980HQ 2.8Ghz 核心数:4 线程数:8 性能影响   vscode-server的ssh远程编程进程可能会对性能有影响   ssh的连接会影响性能   实验过程中,开启NextSSH软件中的数据监看功能,实时监测cpu、内存">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://files.ozline.icu/images/blog/picgo/202211100119771.png">
+<meta property="og:image" content="https://files.ozline.icu/images/blog/picgo/202211100119020.png">
+<meta property="article:published_time" content="2022-11-02T14:30:00.000Z">
+<meta property="article:modified_time" content="2022-11-09T17:39:57.951Z">
+<meta property="article:author" content="OZLIINEX">
+<meta property="article:tag" content="HPC">
+<meta property="article:tag" content="性能优化">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://files.ozline.icu/images/blog/picgo/202211100119771.png">
+  
+  
+  
+  <title>HPL本机性能调优分析 - OZLIINEX&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ozline.icu","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":202181,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- 51.la Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('//js.users.51.la/202181.js');
+      }
+    </script>
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="OZLIINEX's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>OZLIINEX&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://files.ozline.icu/images/BannerImg.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="HPL本机性能调优分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-02 14:30" pubdate>
+          2022年11月2日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          78 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">HPL本机性能调优分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>HPL性能调优</h1>
+<h2 id="环境">环境</h2>
+<p>Ubuntu22.04 插电状态</p>
+<p>笔记本关闭显示,不进入休眠,注销用户,在其他电脑上利用ssh连接</p>
+<p>RAM:16G DDR3</p>
+<p>CPU: i7-4980HQ 2.8Ghz 核心数:4 线程数:8</p>
+<h2 id="性能影响">性能影响</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>vscode-server的ssh远程编程进程可能会对性能有影响</p>
+</li>
+<li class="lvl-2">
+<p>ssh的连接会影响性能</p>
+</li>
+<li class="lvl-2">
+<p>实验过程中,开启NextSSH软件中的数据监看功能,实时监测cpu、内存、网络波动</p>
+</li>
+<li class="lvl-2">
+<p>实验时开启了Wi-Fi功能</p>
+</li>
+<li class="lvl-2">
+<p>内存</p>
+</li>
+<li class="lvl-2">
+<p>笔记本发热降频</p>
+</li>
+</ul>
+<h2 id="参考">参考</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p><a target="_blank" rel="noopener" href="https://github.com/yunzhongOvO/Linpack-HPL">https://github.com/yunzhongOvO/Linpack-HPL</a></p>
+</li>
+<li class="lvl-2">
+<p><a target="_blank" rel="noopener" href="https://www.intel.com/content/www/us/en/products/sku/83503/intel-core-i74980hq-processor-6m-cache-up-to-4-00-ghz/specifications.html">https://www.intel.com/content/www/us/en/products/sku/83503/intel-core-i74980hq-processor-6m-cache-up-to-4-00-ghz/specifications.html</a></p>
+</li>
+<li class="lvl-2">
+<p><a target="_blank" rel="noopener" href="https://www.intel.com/content/www/us/en/products/sku/75789/intel-xeon-processor-e52620-v2-15m-cache-2-10-ghz/specifications.html">https://www.intel.com/content/www/us/en/products/sku/75789/intel-xeon-processor-e52620-v2-15m-cache-2-10-ghz/specifications.html</a></p>
+</li>
+</ul>
+<h2 id="理论峰值">理论峰值</h2>
+<p>$$ Gfloat理论峰值 = 核心数 * 主频 * 每时钟周期浮点运算次数 $$</p>
+<p>本机CPU：Intel Core i7-4980HQ</p>
+<p>CPU主频：2.8GHz<br>
+每时钟周期浮点运算次数：8<br>
+所以本机理论峰值为<br>
+$$ 4* 2.8GHz * 8 = 89.6 Gflops $$</p>
+<p>这部分网上资料搜索有难度,4980HQ使用了avx256指令集,同时有2个FMA,每时钟周期浮点运算次数应当是8*2=16</p>
+<p>但是不确定FMA是否需要加入,这里只考虑了*8的情况</p>
+<p>根据后续实际测试结果,应该是乘以8的</p>
+<h2 id="测试方式">测试方式</h2>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>局域网远程连接测试电脑,启用vscode-server</p>
+</li>
+<li class="lvl-2">
+<p>先行跑一些数据,预热机器</p>
+</li>
+<li class="lvl-2">
+<p><code>mpirun -np 8 ./xhpl </code></p>
+</li>
+<li class="lvl-2">
+<p>开始测试,直接将测试结果输出到<code>result.txt</code>文件</p>
+</li>
+<li class="lvl-2">
+<p>利用命令<code>cat result.txt | grep WC00L2L2</code>获取答案</p>
+</li>
+</ul>
+<p>测试例图:</p>
+<p><img src="https://files.ozline.icu/images/blog/picgo/202211100119771.png" srcset="/img/loading.gif" lazyload alt="image-20221110011916737"></p>
+<h2 id="默认测试">默认测试</h2>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">HPLinpack benchmark input file<br>Innovative Computing Laboratory, University of Tennessee<br>HPL.out      output file name <span class="hljs-params">(if any)</span><br>6            device out <span class="hljs-params">(<span class="hljs-attr">6</span>=stdout,<span class="hljs-attr">7</span>=stderr,file)</span><br>1            <span class="hljs-comment"># of problems sizes (N)</span><br>5000         Ns<br>1            <span class="hljs-comment"># of NBs</span><br>1            NBs<br>0            PMAP process mapping <span class="hljs-params">(<span class="hljs-attr">0</span>=Row-,<span class="hljs-attr">1</span>=Column-major)</span><br>1            <span class="hljs-comment"># of process grids (P x Q)</span><br>2            Ps<br>2            Qs<br>16.0         threshold<br>1            <span class="hljs-comment"># of panel fact</span><br>0            PFACTs <span class="hljs-params">(<span class="hljs-attr">0</span>=left, <span class="hljs-attr">1</span>=Crout, <span class="hljs-attr">2</span>=Right)</span><br>1            <span class="hljs-comment"># of recursive stopping criterium</span><br>2            NBMINs <span class="hljs-params">(&gt;= 1)</span><br>1            <span class="hljs-comment"># of panels in recursion</span><br>2            NDIVs<br>1            <span class="hljs-comment"># of recursive panel fact.</span><br>0            RFACTs <span class="hljs-params">(<span class="hljs-attr">0</span>=left, <span class="hljs-attr">1</span>=Crout, <span class="hljs-attr">2</span>=Right)</span><br>1            <span class="hljs-comment"># of broadcast</span><br>0            BCASTs <span class="hljs-params">(<span class="hljs-attr">0</span>=1rg,<span class="hljs-attr">1</span>=1rM,<span class="hljs-attr">2</span>=2rg,<span class="hljs-attr">3</span>=2rM,<span class="hljs-attr">4</span>=Lng,<span class="hljs-attr">5</span>=LnM)</span><br>1            <span class="hljs-comment"># of lookahead depth</span><br>0            DEPTHs <span class="hljs-params">(&gt;=0)</span><br>2            SWAP <span class="hljs-params">(<span class="hljs-attr">0</span>=bin-exch,<span class="hljs-attr">1</span>=long,<span class="hljs-attr">2</span>=mix)</span><br>64           swapping threshold<br>0            L1 in <span class="hljs-params">(<span class="hljs-attr">0</span>=transposed,<span class="hljs-attr">1</span>=no-transposed)</span> form<br>0            U  in <span class="hljs-params">(<span class="hljs-attr">0</span>=transposed,<span class="hljs-attr">1</span>=no-transposed)</span> form<br>1            Equilibration <span class="hljs-params">(<span class="hljs-attr">0</span>=no,<span class="hljs-attr">1</span>=yes)</span><br>8            memory alignment in double <span class="hljs-params">(&gt; 0)</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">➜  <span class="hljs-built_in">test</span> mpirun -np 8 ./xhpl<br></code></pre></td></tr></table></figure>
+<p>测试过程中电脑数据情况如图所示</p>
+<p><img src="https://files.ozline.icu/images/blog/picgo/202211100119020.png" srcset="/img/loading.gif" lazyload alt="image-20221110011929988"></p>
+<p>测试结果</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs markdown">================================================================================<br><span class="hljs-section">T/V                N    NB     P     Q               Time                 Gflops</span><br><span class="hljs-section">--------------------------------------------------------------------------------</span><br>WR00L2L2        5000     1     2     2              27.06             3.0806e+00<br></code></pre></td></tr></table></figure>
+<p>不知道是理论出错还是什么原因,的确是只有3.08Gflops…</p>
+<p>实际理论比值约为1.76%,考虑到可能是NB值过小原因</p>
+<h2 id="参数优化">参数优化</h2>
+<h3 id="矩阵规模N">矩阵规模N</h3>
+<p>根据公式 $$ N * N * 8 = 物理内存容量 * 0.8 $$</p>
+<p>这里物理内存容量单位是bytes,这台机子的内存为16G,那么我们经过计算需要的N值大约为41448.6</p>
+<p>考虑到我们实际上是取了80%,而可以考虑取到80-85%,再根据经验贴考虑384的倍数</p>
+<p>那么我们可以确定N值为<strong>41472</strong>,也就是说要在这个范围内测试</p>
+<p>这里考虑暂时以n=5000为测试</p>
+<p>疑问:这里的公式似乎有错?我认为取不到41472</p>
+<p>参考的一篇文档,47G内存N可以到52900,类比一下16G内存应该只能到三分之一甚至更低?</p>
+<p>后续的数据也可以看出,实际上N的取值范围对于本机来说大约在10000左右</p>
+<h3 id="二维处理器网格P-Q">二维处理器网格P*Q</h3>
+<p>根据公式:$$ P*Q = 进程数 = 系统CPU数 $$</p>
+<p>一般来说一个进程对于一个CPU可以得到最佳性能</p>
+<p>一般情况下,P应当略小于Q,因为列向通信量的通信次数和通信数据量大于横向通信.</p>
+<p>HPL中，L分解的列向通信采用二元交换法（Binary Exchange），当列向处理器个数P为2的幂时，性能最优</p>
+<p>综上,确定<code>P=2 Q=2</code>和<code>P=1 Q=4</code>两组数据</p>
+<h3 id="矩阵分块NB">矩阵分块NB</h3>
+<p>HPL 使用块大小 NB 进行数据分布和计算粒度。从数据分布的角度来看，NB越小，负载平衡越好。从计算的角度来看，NB 值太小可能会限制计算性能，消息的数量将增加。NB的选择和软硬件许多因素密切相关。</p>
+<p>NB一般在256以下，NB的最优值主要通过实际测试来得到。</p>
+<p>本实验中选取<code>32、64、128、256</code>五组数据</p>
+<h3 id="PMAP-process-mapping">PMAP process mapping</h3>
+<p>HPL文档中介绍，按列的排列方式适用于节点数较多、每个节点内CPU数较少的系统；按行的排列方式适用于节点数较少、每个节点内CPU数较多的大规模系统。在机群系统上，按列的排列方式的性能远好于按行的排列方式，此处一般选择1。</p>
+<p>测试中选择<code>1</code></p>
+<h2 id="第一次测试">第一次测试</h2>
+<p>单个测试ID测试约10次,数据取平均值</p>
+<h3 id="N-5000">N=5000</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>N</th>
+<th>P*Q</th>
+<th>NB</th>
+<th>PMAP process mapping</th>
+<th>耗时/s</th>
+<th>测试结果/Gflops</th>
+<th>理论实际比值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>5000</td>
+<td>2*2</td>
+<td>32</td>
+<td>1</td>
+<td>1.51</td>
+<td>5.5114e+01</td>
+<td>61.51%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>5000</td>
+<td>2*2</td>
+<td>64</td>
+<td>1</td>
+<td>1.50</td>
+<td>5.5686e+01</td>
+<td>62.15%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>5000</td>
+<td>2*2</td>
+<td>128</td>
+<td>1</td>
+<td>1.57</td>
+<td>5.2981e+01</td>
+<td>59.13%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>5000</td>
+<td>2*2</td>
+<td>256</td>
+<td>1</td>
+<td>1.91</td>
+<td>4.3722e+01</td>
+<td>48.80%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>5000</td>
+<td>1*4</td>
+<td>32</td>
+<td>1</td>
+<td>1.62</td>
+<td>5.1491e+01</td>
+<td>57.47%</td>
+</tr>
+<tr>
+<td>6</td>
+<td>5000</td>
+<td>1*4</td>
+<td>64</td>
+<td>1</td>
+<td>1.55</td>
+<td>5.3885e+01</td>
+<td>60.14%</td>
+</tr>
+<tr>
+<td>7</td>
+<td>5000</td>
+<td>1*4</td>
+<td>128</td>
+<td>1</td>
+<td>1.58</td>
+<td>5.2606e+01</td>
+<td>58.71%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>5000</td>
+<td>1*4</td>
+<td>256</td>
+<td>1</td>
+<td>2.05</td>
+<td>4.0587e+01</td>
+<td>45.30%</td>
+</tr>
+</tbody>
+</table>
+<p>第一轮测试数据如表,效果最好的是2号数据</p>
+<h3 id="N-10000">N=10000</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>N</th>
+<th>P*Q</th>
+<th>NB</th>
+<th>PMAP process mapping</th>
+<th>耗时/s</th>
+<th>测试结果/Gflops</th>
+<th>理论实际比值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>10000</td>
+<td>2*2</td>
+<td>32</td>
+<td>1</td>
+<td>13.87</td>
+<td>4.8061e+01</td>
+<td>53.64%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>10000</td>
+<td>2*2</td>
+<td>64</td>
+<td>1</td>
+<td>10.96</td>
+<td>6.0826e+01</td>
+<td>67.89%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>10000</td>
+<td>2*2</td>
+<td>128</td>
+<td>1</td>
+<td>10.44</td>
+<td>6.3850e+01</td>
+<td>71.26%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>10000</td>
+<td>2*2</td>
+<td>256</td>
+<td>1</td>
+<td>11.90</td>
+<td>5.6054e+01</td>
+<td>62.56%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>10000</td>
+<td>1*4</td>
+<td>32</td>
+<td>1</td>
+<td>13.83</td>
+<td>4.8225e+01</td>
+<td>53.82%</td>
+</tr>
+<tr>
+<td>6</td>
+<td>10000</td>
+<td>1*4</td>
+<td>64</td>
+<td>1</td>
+<td>10.08</td>
+<td>6.1314e+01</td>
+<td>68.43%</td>
+</tr>
+<tr>
+<td>7</td>
+<td>10000</td>
+<td>1*4</td>
+<td>128</td>
+<td>1</td>
+<td>10.91</td>
+<td>6.1104e+01</td>
+<td>68.20%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>10000</td>
+<td>1*4</td>
+<td>256</td>
+<td>1</td>
+<td>11.94</td>
+<td>5.5839e+01</td>
+<td>62.32%</td>
+</tr>
+</tbody>
+</table>
+<p>第二轮测试数据如表,效果最好为3号数据</p>
+<h3 id="N-15000">N=15000</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>N</th>
+<th>P*Q</th>
+<th>NB</th>
+<th>PMAP process mapping</th>
+<th>耗时/s</th>
+<th>测试结果/Gflops</th>
+<th>理论实际比值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>15000</td>
+<td>2*2</td>
+<td>32</td>
+<td>1</td>
+<td>52.85</td>
+<td>4.2578e+01</td>
+<td>47.52%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>15000</td>
+<td>2*2</td>
+<td>64</td>
+<td>1</td>
+<td>45.03</td>
+<td>4.9978e+01</td>
+<td>55.78%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>15000</td>
+<td>2*2</td>
+<td>128</td>
+<td>1</td>
+<td>41.98</td>
+<td>5.3607e+01</td>
+<td>59.83%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>15000</td>
+<td>2*2</td>
+<td>256</td>
+<td>1</td>
+<td>48.16</td>
+<td>4.6725e+01</td>
+<td>52.15%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>15000</td>
+<td>1*4</td>
+<td>32</td>
+<td>1</td>
+<td>73.10</td>
+<td>3.0786e+01</td>
+<td>34.36%</td>
+</tr>
+<tr>
+<td>6</td>
+<td>15000</td>
+<td>1*4</td>
+<td>64</td>
+<td>1</td>
+<td>55.96</td>
+<td>4.0213e+01</td>
+<td>44.88%</td>
+</tr>
+<tr>
+<td>7</td>
+<td>15000</td>
+<td>1*4</td>
+<td>128</td>
+<td>1</td>
+<td>53.44</td>
+<td>4.2106e+01</td>
+<td>46.99%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>15000</td>
+<td>1*4</td>
+<td>256</td>
+<td>1</td>
+<td>52.82</td>
+<td>4.2603e+01</td>
+<td>47.55%</td>
+</tr>
+</tbody>
+</table>
+<p>第三轮测试数据如表,效果最好为3号数据</p>
+<h3 id="N-20000">N=20000</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>N</th>
+<th>P*Q</th>
+<th>NB</th>
+<th>PMAP process mapping</th>
+<th>耗时/s</th>
+<th>测试结果/Gflops</th>
+<th>理论实际比值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>20000</td>
+<td>2*2</td>
+<td>32</td>
+<td>1</td>
+<td>138.93</td>
+<td>3.8393e+01</td>
+<td>42.85%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>20000</td>
+<td>2*2</td>
+<td>64</td>
+<td>1</td>
+<td>130.79</td>
+<td>4.0783e+01</td>
+<td>45.52%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>20000</td>
+<td>2*2</td>
+<td>128</td>
+<td>1</td>
+<td>123.08</td>
+<td>4.3337e+01</td>
+<td>48.37%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>20000</td>
+<td>2*2</td>
+<td>256</td>
+<td>1</td>
+<td>129.60</td>
+<td>4.1156e+01</td>
+<td>45.93%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>20000</td>
+<td>1*4</td>
+<td>32</td>
+<td>1</td>
+<td>178.66</td>
+<td>2.9855e+01</td>
+<td>33.32%</td>
+</tr>
+<tr>
+<td>6</td>
+<td>20000</td>
+<td>1*4</td>
+<td>64</td>
+<td>1</td>
+<td>152.13</td>
+<td>3.5061e+01</td>
+<td>39.13%</td>
+</tr>
+<tr>
+<td>7</td>
+<td>20000</td>
+<td>1*4</td>
+<td>128</td>
+<td>1</td>
+<td>141.92</td>
+<td>3.7583e+01</td>
+<td>41.95%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>20000</td>
+<td>1*4</td>
+<td>256</td>
+<td>1</td>
+<td>131.40</td>
+<td>4.0594e+01</td>
+<td>45.31%</td>
+</tr>
+</tbody>
+</table>
+<p>第四轮测试数据如表,效果最好的仍为3号数据</p>
+<h3 id="小结">小结</h3>
+<p>可以发现,这四组数据中</p>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>关于N的甜点值大约在10000附近</p>
+</li>
+<li class="lvl-2">
+<p>效果最好的除了N=5000的情况,其余均为3号数据,而N=5000的情况下,2号数据和3号数据差异不大</p>
+</li>
+</ul>
+<p>在后续测试中,将会以三号数据的情况为基准,N=10000开始测试</p>
+<h2 id="第二次测试">第二次测试</h2>
+<h3 id="N-8192">N=8192</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">ID</th>
+<th>N</th>
+<th>P*Q</th>
+<th>NB</th>
+<th style="text-align:center">PMAP process mapping</th>
+<th style="text-align:center">耗时/s</th>
+<th style="text-align:center">测试结果/Gflops</th>
+<th style="text-align:center">理论实际比值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td>8192</td>
+<td>2*2</td>
+<td>96</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">5.84</td>
+<td style="text-align:center">6.2826e+01</td>
+<td style="text-align:center">70.12%</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td>8192</td>
+<td>2*2</td>
+<td>128</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">6.31</td>
+<td style="text-align:center">5.8132e+01</td>
+<td style="text-align:center">64.88%</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td>8192</td>
+<td>2*2</td>
+<td>160</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">7.16</td>
+<td style="text-align:center">5.3695e+01</td>
+<td style="text-align:center">59.83%</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td>8192</td>
+<td>2*2</td>
+<td>96</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">6.24</td>
+<td style="text-align:center">5.8795e+01</td>
+<td style="text-align:center">65.62%</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td>8192</td>
+<td>2*2</td>
+<td>128</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">6.71</td>
+<td style="text-align:center">5.4660e+01</td>
+<td style="text-align:center">61.00%</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td>8192</td>
+<td>2*2</td>
+<td>160</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">6.78</td>
+<td style="text-align:center">5.4043e+01</td>
+<td style="text-align:center">60.32%</td>
+</tr>
+</tbody>
+</table>
+<p>PMAP process mapping=1时效果最好</p>
+<p>NB=96时的效果最好</p>
+<h3 id="N-10240">N=10240</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">ID</th>
+<th>N</th>
+<th>P*Q</th>
+<th>NB</th>
+<th style="text-align:center">PMAP process mapping</th>
+<th style="text-align:center">耗时/s</th>
+<th style="text-align:center">测试结果/Gflops</th>
+<th style="text-align:center">理论实际比值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td>10240</td>
+<td>2*2</td>
+<td>96</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">11.10</td>
+<td style="text-align:center">6.4515e+01</td>
+<td style="text-align:center">72.00%</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td>10240</td>
+<td>2*2</td>
+<td>128</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">12.80</td>
+<td style="text-align:center">5.8132e+01</td>
+<td style="text-align:center">62.43%</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td>10240</td>
+<td>2*2</td>
+<td>160</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">14.19</td>
+<td style="text-align:center">5.0474e+01</td>
+<td style="text-align:center">56.33%</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td>10240</td>
+<td>2*2</td>
+<td>96</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">11.54</td>
+<td style="text-align:center">6.2030e+01</td>
+<td style="text-align:center">69.23%</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td>10240</td>
+<td>2*2</td>
+<td>128</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">15.31</td>
+<td style="text-align:center">4.6761e+01</td>
+<td style="text-align:center">52.19%</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td>10240</td>
+<td>2*2</td>
+<td>160</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">16.91</td>
+<td style="text-align:center">4.2343e+01</td>
+<td style="text-align:center">47.26%</td>
+</tr>
+</tbody>
+</table>
+<p>PMAP process mapping=1时效果最好</p>
+<p>NB=96时的效果最好</p>
+<h3 id="N-12288">N=12288</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">ID</th>
+<th>N</th>
+<th>P*Q</th>
+<th>NB</th>
+<th style="text-align:center">PMAP process mapping</th>
+<th style="text-align:center">耗时/s</th>
+<th style="text-align:center">测试结果/Gflops</th>
+<th style="text-align:center">理论实际比值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td>12288</td>
+<td>2*2</td>
+<td>96</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">19.83</td>
+<td style="text-align:center">6.2392e+01</td>
+<td style="text-align:center">69.63%</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td>12288</td>
+<td>2*2</td>
+<td>128</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">25.31</td>
+<td style="text-align:center">5.8132e+01</td>
+<td style="text-align:center">54.55%</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td>12288</td>
+<td>2*2</td>
+<td>160</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">20.94</td>
+<td style="text-align:center">5.9075e+01</td>
+<td style="text-align:center">65.93%</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td>12288</td>
+<td>2*2</td>
+<td>96</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">26.67</td>
+<td style="text-align:center">6.1447e+01</td>
+<td style="text-align:center">68.58%</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td>12288</td>
+<td>2*2</td>
+<td>128</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">23.10</td>
+<td style="text-align:center">5.3557e+01</td>
+<td style="text-align:center">59.77%</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td>12288</td>
+<td>2*2</td>
+<td>160</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">26.67</td>
+<td style="text-align:center">4.6387e+01</td>
+<td style="text-align:center">51.77%</td>
+</tr>
+</tbody>
+</table>
+<p>PMAP process mapping=1时效果最好</p>
+<p>NB=96时的效果最好</p>
+<p><strong>需要注意:</strong></p>
+<p>经过多轮测试,只改变NB值,理论实际比值在这一组测试中并非递减,<mark>存疑</mark></p>
+<h3 id="小结-2">小结</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>PMAPprocess mapping = 1</p>
+</li>
+<li class="lvl-2">
+<p>P*Q = 2</p>
+</li>
+<li class="lvl-2">
+<p>NB范围中值更新为96</p>
+</li>
+<li class="lvl-2">
+<p>N范围中值更新为10240,缩小区间</p>
+</li>
+</ul>
+<h2 id="第三次测试">第三次测试</h2>
+<h3 id="新的测试方法">新的测试方法</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>使用命令<code>hpl-test &gt; result.txt &amp;&amp; cat result.txt | grep WR00L2L2</code>,其中<code>hpl-test</code>对应上文的测试命令</p>
+</li>
+<li class="lvl-2">
+<p>对于9组测试,均取10次结果的平均值作为数据.在这里我使用了word的文本转表格、再将表格导入excel,excel自动计算十次答案的平均值</p>
+</li>
+</ul>
+<h3 id="数据结果">数据结果</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">ID</th>
+<th style="text-align:center">N</th>
+<th style="text-align:center">P*Q</th>
+<th style="text-align:center">NB</th>
+<th style="text-align:center">平均耗时/s</th>
+<th style="text-align:center">平均测试结果/Gflops</th>
+<th style="text-align:center">理论实际比值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">9216</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">80</td>
+<td style="text-align:center">9.221</td>
+<td style="text-align:center">5.7660E+01</td>
+<td style="text-align:center">64.35%</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">9216</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">96</td>
+<td style="text-align:center">9.834</td>
+<td style="text-align:center">5.3615E+01</td>
+<td style="text-align:center">59.84%</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">9216</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">112</td>
+<td style="text-align:center">10.26</td>
+<td style="text-align:center">5.1499E+01</td>
+<td style="text-align:center">57.48%</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">10240</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">80</td>
+<td style="text-align:center">16.027</td>
+<td style="text-align:center">4.4861E+01</td>
+<td style="text-align:center">50.07%</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">10240</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">96</td>
+<td style="text-align:center">13.957</td>
+<td style="text-align:center">5.1972E+01</td>
+<td style="text-align:center">58.00%</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">10240</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">112</td>
+<td style="text-align:center">14.394</td>
+<td style="text-align:center">5.0079E+01</td>
+<td style="text-align:center">55.89%</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">11264</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">80</td>
+<td style="text-align:center">19.781</td>
+<td style="text-align:center">4.8580E+01</td>
+<td style="text-align:center">54.22%</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">11264</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">96</td>
+<td style="text-align:center">19.373</td>
+<td style="text-align:center">4.9618E+01</td>
+<td style="text-align:center">55.38%</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">11264</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">112</td>
+<td style="text-align:center">19.591</td>
+<td style="text-align:center">4.9121E+01</td>
+<td style="text-align:center">54.82%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="小结-3">小结</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>N范围以9216为基础值</p>
+</li>
+<li class="lvl-2">
+<p>NB范围以80为基础值</p>
+</li>
+<li class="lvl-2">
+<p>在测试过程中,发现由于电脑散热原因部分测试结果数据整体较低,但个人认为不影响理论实际比值</p>
+</li>
+<li class="lvl-2">
+<p>在测试过程中,单次测试获得的最高理论实际比值为71.09%,发生在一号数据中</p>
+</li>
+</ul>
+<h2 id="第四次测试">第四次测试</h2>
+<h3 id="新的测试方法-2">新的测试方法</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>关闭NextSSH的数据监看</p>
+</li>
+<li class="lvl-2">
+<p>关闭vscode-server连接</p>
+</li>
+<li class="lvl-2">
+<p>编写shell脚本自动化实现测试</p>
+</li>
+<li class="lvl-2">
+<p>只取十次测试中最好结果(考虑发热问题)</p>
+</li>
+</ul>
+<h3 id="shell脚本">shell脚本</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br>cat /dev/null &gt; result.txt<br>for i in &#123;1..10&#125;;<br>do<br>    echo &quot;Solving process : $i&quot;<br>    mpirun -np 8 ./xhpl | grep WR00L2L2 &gt;&gt; result.txt<br>done<br></code></pre></td></tr></table></figure>
+<h3 id="测试参数">测试参数</h3>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">HPLinpack</span> benchmark input file<br><span class="hljs-attribute">Innovative</span> Computing Laboratory, University of Tennessee<br><span class="hljs-attribute">HPL</span>.out      output file name (if any)<br><span class="hljs-attribute">6</span>            device out (<span class="hljs-number">6</span>=stdout,<span class="hljs-number">7</span>=stderr,file)<br><span class="hljs-attribute">3</span>            # of problems sizes (N)<br><span class="hljs-attribute">8704</span> <span class="hljs-number">9216</span> <span class="hljs-number">9728</span>          Ns<br><span class="hljs-attribute">3</span>            # of NBs<br><span class="hljs-attribute">72</span> <span class="hljs-number">80</span> <span class="hljs-number">88</span>    NBs<br><span class="hljs-attribute">0</span>            PMAP process mapping (<span class="hljs-number">0</span>=Row-,<span class="hljs-number">1</span>=Column-major)<br><span class="hljs-attribute">1</span>            # of process grids (P x Q)<br><span class="hljs-attribute">2</span>            Ps<br><span class="hljs-attribute">2</span>            Qs<br><span class="hljs-attribute">16</span>.<span class="hljs-number">0</span>         threshold<br><span class="hljs-attribute">1</span>            # of panel fact<br><span class="hljs-attribute">0</span>            PFACTs (<span class="hljs-number">0</span>=left, <span class="hljs-number">1</span>=Crout, <span class="hljs-number">2</span>=Right)<br><span class="hljs-attribute">1</span>            # of recursive stopping criterium<br><span class="hljs-attribute">2</span>            NBMINs (&gt;= <span class="hljs-number">1</span>)<br><span class="hljs-attribute">1</span>            # of panels in recursion<br><span class="hljs-attribute">2</span>            NDIVs<br><span class="hljs-attribute">1</span>            # of recursive panel fact.<br><span class="hljs-attribute">0</span>            RFACTs (<span class="hljs-number">0</span>=left, <span class="hljs-number">1</span>=Crout, <span class="hljs-number">2</span>=Right)<br><span class="hljs-attribute">1</span>            # of broadcast<br><span class="hljs-attribute">0</span>            BCASTs (<span class="hljs-number">0</span>=<span class="hljs-number">1</span>rg,<span class="hljs-number">1</span>=<span class="hljs-number">1</span>rM,<span class="hljs-number">2</span>=<span class="hljs-number">2</span>rg,<span class="hljs-number">3</span>=<span class="hljs-number">2</span>rM,<span class="hljs-number">4</span>=Lng,<span class="hljs-number">5</span>=LnM)<br><span class="hljs-attribute">1</span>            # of lookahead depth<br><span class="hljs-attribute">0</span>            DEPTHs (&gt;=<span class="hljs-number">0</span>)<br><span class="hljs-attribute">2</span>            SWAP (<span class="hljs-number">0</span>=bin-exch,<span class="hljs-number">1</span>=long,<span class="hljs-number">2</span>=mix)<br><span class="hljs-attribute">64</span>           swapping threshold<br><span class="hljs-attribute">0</span>            L1 in (<span class="hljs-number">0</span>=transposed,<span class="hljs-number">1</span>=no-transposed) form<br><span class="hljs-attribute">0</span>            U  in (<span class="hljs-number">0</span>=transposed,<span class="hljs-number">1</span>=no-transposed) form<br><span class="hljs-attribute">1</span>            Equilibration (<span class="hljs-number">0</span>=no,<span class="hljs-number">1</span>=yes)<br><span class="hljs-attribute">8</span>            memory alignment in double (&gt; <span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="数据结果-只取各个参数最好成绩">数据结果(只取各个参数最好成绩)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">ID</th>
+<th style="text-align:center">N</th>
+<th style="text-align:center">P*Q</th>
+<th style="text-align:center">NB</th>
+<th style="text-align:center">耗时/s</th>
+<th style="text-align:center">测试结果/Gflops</th>
+<th style="text-align:center">理论实际比值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">8704</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">72</td>
+<td style="text-align:center">7.19</td>
+<td style="text-align:center">6.1133e+01</td>
+<td style="text-align:center">68.23%</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">8704</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">80</td>
+<td style="text-align:center">7.58</td>
+<td style="text-align:center">5.8030e+01</td>
+<td style="text-align:center">64.77%</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">8704</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">88</td>
+<td style="text-align:center">8.38</td>
+<td style="text-align:center">5.2490e+01</td>
+<td style="text-align:center">58.58%</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">9216</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">72</td>
+<td style="text-align:center">9.10</td>
+<td style="text-align:center">5.7354e+01</td>
+<td style="text-align:center">64.01%</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">9216</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">80</td>
+<td style="text-align:center">9.43</td>
+<td style="text-align:center">5.5361e+01</td>
+<td style="text-align:center">61.79%</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">9216</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">88</td>
+<td style="text-align:center">10.78</td>
+<td style="text-align:center">4.8403e+01</td>
+<td style="text-align:center">54.02%</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">9728</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">72</td>
+<td style="text-align:center">12.92</td>
+<td style="text-align:center">4.7531e+01</td>
+<td style="text-align:center">53.05%</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">9728</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">80</td>
+<td style="text-align:center">10.41</td>
+<td style="text-align:center">5.8965e+01</td>
+<td style="text-align:center">65.81%</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">9728</td>
+<td style="text-align:center">2*2</td>
+<td style="text-align:center">88</td>
+<td style="text-align:center">10.97</td>
+<td style="text-align:center">5.5965e+01</td>
+<td style="text-align:center">62.46%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="性能损失">性能损失</h3>
+<p>根据<code>lm-sensors</code>提供的数据,测试结束一段时间后cpu温度仍然在50多度</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Adapter</span>: ISA adapter<br><span class="hljs-attribute">Package</span> id <span class="hljs-number">0</span>:  +<span class="hljs-number">55</span>.<span class="hljs-number">0</span>°C  (high = +<span class="hljs-number">84</span>.<span class="hljs-number">0</span>°C, crit = +<span class="hljs-number">100</span>.<span class="hljs-number">0</span>°C)<br><span class="hljs-attribute">Core</span> <span class="hljs-number">0</span>:        +<span class="hljs-number">51</span>.<span class="hljs-number">0</span>°C  (high = +<span class="hljs-number">84</span>.<span class="hljs-number">0</span>°C, crit = +<span class="hljs-number">100</span>.<span class="hljs-number">0</span>°C)<br><span class="hljs-attribute">Core</span> <span class="hljs-number">1</span>:        +<span class="hljs-number">50</span>.<span class="hljs-number">0</span>°C  (high = +<span class="hljs-number">84</span>.<span class="hljs-number">0</span>°C, crit = +<span class="hljs-number">100</span>.<span class="hljs-number">0</span>°C)<br><span class="hljs-attribute">Core</span> <span class="hljs-number">2</span>:        +<span class="hljs-number">52</span>.<span class="hljs-number">0</span>°C  (high = +<span class="hljs-number">84</span>.<span class="hljs-number">0</span>°C, crit = +<span class="hljs-number">100</span>.<span class="hljs-number">0</span>°C)<br><span class="hljs-attribute">Core</span> <span class="hljs-number">3</span>:        +<span class="hljs-number">50</span>.<span class="hljs-number">0</span>°C  (high = +<span class="hljs-number">84</span>.<span class="hljs-number">0</span>°C, crit = +<span class="hljs-number">100</span>.<span class="hljs-number">0</span>°C)<br></code></pre></td></tr></table></figure>
+<p>应该是撞温度墙了,导致频率下降,所以后续测试并不准确,各个数据之间拉不开差距</p>
+<h3 id="小结-4">小结</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>发现一些问题所在:温度、功耗、连续测试变为压测</p>
+</li>
+<li class="lvl-2">
+<p>后面测试不应该安排这么紧密</p>
+</li>
+</ul>
+<h3 id="其他">其他</h3>
+<p>本次测试数据保留在result.txt里,可以参考</p>
+<h2 id="第五次测试">第五次测试</h2>
+<h3 id="新的测试方法-3">新的测试方法</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>利用<code>cpufrequtils</code>开启cpu高性能模式</p>
+</li>
+<li class="lvl-2">
+<p>将电脑移动至开阔地带</p>
+</li>
+<li class="lvl-2">
+<p>利用风扇辅助散热</p>
+</li>
+<li class="lvl-2">
+<p>只测试4次,每次只测试一组数据,取最高值</p>
+</li>
+<li class="lvl-2">
+<p>监控CPU温度,到45度左右在开始测试</p>
+</li>
+</ul>
+<h3 id="shell脚本-2">shell脚本</h3>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!/bin/bash</span><br>cat /dev/null &gt; result.txt<br>echo &quot;launch performance mode&quot;<br>for i in &#123;0..7&#125;<br>do<br>    sudo cpufreq-set -g performance -c $i<br>done<br>for i in &#123;1..4&#125;;<br>do<br>    echo &quot;Solving process : $i&quot;<br>    mpirun -np 8 ./xhpl | grep WR00L2L2 &gt;&gt; result.txt<br>done<br></code></pre></td></tr></table></figure>
+<h3 id="数据">数据</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">ID</th>
+<th>N</th>
+<th>P*Q</th>
+<th>NB</th>
+<th style="text-align:center">耗时/s</th>
+<th style="text-align:center">测试结果/Gflops</th>
+<th style="text-align:center">理论实际比值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td>10240</td>
+<td>2*2</td>
+<td>96</td>
+<td style="text-align:center">11.28</td>
+<td style="text-align:center">6.3468e+01</td>
+<td style="text-align:center">70.83%</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td>10240</td>
+<td>2*2</td>
+<td>128</td>
+<td style="text-align:center">11.53</td>
+<td style="text-align:center">6.2105e+01</td>
+<td style="text-align:center">69.31%</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td>9216</td>
+<td>2*2</td>
+<td>96</td>
+<td style="text-align:center">8.94</td>
+<td style="text-align:center">5.8401e+01</td>
+<td style="text-align:center">65.18%</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td>9216</td>
+<td>2*2</td>
+<td>128</td>
+<td style="text-align:center">8.42</td>
+<td style="text-align:center">6.1987e+01</td>
+<td style="text-align:center">69.18%</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td>8704</td>
+<td>2*2</td>
+<td>96</td>
+<td style="text-align:center">6.69</td>
+<td style="text-align:center">6.5727e+01</td>
+<td style="text-align:center">73.36%</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td>8704</td>
+<td>2*2</td>
+<td>128</td>
+<td style="text-align:center">7.63</td>
+<td style="text-align:center">5.7631e+01</td>
+<td style="text-align:center">64.32%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="结论">结论</h3>
+<p>有突破点了,1号和5号数据都超过了70!还刷新到了73.36%!</p>
+<h2 id="第六次测试">第六次测试</h2>
+<h3 id="从内存确定N的值">从内存确定N的值</h3>
+<p>根据<code>free -g</code>获取到的数据</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs tap">           total        used        free      shared  buff/cache   available<br>内存：        <span class="hljs-number"> 15 </span>         <span class="hljs-number"> 1 </span>        <span class="hljs-number"> 10 </span>         <span class="hljs-number"> 0 </span>         <span class="hljs-number"> 3 </span>         13<br>交换：         <span class="hljs-number"> 1 </span>         <span class="hljs-number"> 0 </span>          1<br></code></pre></td></tr></table></figure>
+<p>我们注意到实际上可用空间是10g,那么重新计算的出的N的值为35895左右,离他最近的384的倍数是35712</p>
+<p>分别试试这两个</p>
+<h3 id="N-35895">N=35895</h3>
+<p>可以看见这里面的物理内存剩余稳定在3.7g可用,说明还没压榨完,可以考虑继续提高n的值</p>
+<p>测试得出Gflops = 6.1495e+01, 理论实际比值为68.63%</p>
+<h3 id="N-38400">N=38400</h3>
+<p>考虑到还有内存剩余,我们尝试N=38400</p>
+<p>测试得出:Gflops = 6.1320e+01, 理论实际比值为68.44%</p>
+<h2 id="总结">总结</h2>
+<h3 id="最好成绩">最好成绩</h3>
+<p>实际/理论*100% = 73.36%</p>
+<p>参数如下</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">HPLinpack benchmark input file<br>Innovative Computing Laboratory, University of Tennessee<br>HPL.out      output file name <span class="hljs-params">(if any)</span><br>6            device out <span class="hljs-params">(<span class="hljs-attr">6</span>=stdout,<span class="hljs-attr">7</span>=stderr,file)</span><br>1            <span class="hljs-comment"># of problems sizes (N)</span><br>8704         Ns<br>1            <span class="hljs-comment"># of NBs</span><br>96           NBs<br>0            PMAP process mapping <span class="hljs-params">(<span class="hljs-attr">0</span>=Row-,<span class="hljs-attr">1</span>=Column-major)</span><br>1            <span class="hljs-comment"># of process grids (P x Q)</span><br>2            Ps<br>2            Qs<br>16.0         threshold<br>1            <span class="hljs-comment"># of panel fact</span><br>0            PFACTs <span class="hljs-params">(<span class="hljs-attr">0</span>=left, <span class="hljs-attr">1</span>=Crout, <span class="hljs-attr">2</span>=Right)</span><br>1            <span class="hljs-comment"># of recursive stopping criterium</span><br>2            NBMINs <span class="hljs-params">(&gt;= 1)</span><br>1            <span class="hljs-comment"># of panels in recursion</span><br>2            NDIVs<br>1            <span class="hljs-comment"># of recursive panel fact.</span><br>0            RFACTs <span class="hljs-params">(<span class="hljs-attr">0</span>=left, <span class="hljs-attr">1</span>=Crout, <span class="hljs-attr">2</span>=Right)</span><br>1            <span class="hljs-comment"># of broadcast</span><br>0            BCASTs <span class="hljs-params">(<span class="hljs-attr">0</span>=1rg,<span class="hljs-attr">1</span>=1rM,<span class="hljs-attr">2</span>=2rg,<span class="hljs-attr">3</span>=2rM,<span class="hljs-attr">4</span>=Lng,<span class="hljs-attr">5</span>=LnM)</span><br>1            <span class="hljs-comment"># of lookahead depth</span><br>0            DEPTHs <span class="hljs-params">(&gt;=0)</span><br>2            SWAP <span class="hljs-params">(<span class="hljs-attr">0</span>=bin-exch,<span class="hljs-attr">1</span>=long,<span class="hljs-attr">2</span>=mix)</span><br>64           swapping threshold<br>0            L1 in <span class="hljs-params">(<span class="hljs-attr">0</span>=transposed,<span class="hljs-attr">1</span>=no-transposed)</span> form<br>0            U  in <span class="hljs-params">(<span class="hljs-attr">0</span>=transposed,<span class="hljs-attr">1</span>=no-transposed)</span> form<br>1            Equilibration <span class="hljs-params">(<span class="hljs-attr">0</span>=no,<span class="hljs-attr">1</span>=yes)</span><br>8            memory alignment in double <span class="hljs-params">(&gt; 0)</span><br></code></pre></td></tr></table></figure>
+<h3 id="优化方向">优化方向</h3>
+<ul class="lvl-0">
+<li class="lvl-2">
+<p>经过前期摸爬滚打,优化方向大致在N、NB、P、Q上</p>
+</li>
+<li class="lvl-2">
+<p>需要考虑CPU散热问题</p>
+</li>
+<li class="lvl-2">
+<p>通常以2的整数倍效果好,尤其是2的幂</p>
+</li>
+</ul>
+<h3 id="标准成绩">标准成绩</h3>
+<p>在笔记本上,经过优化,可以跑到70%以上的实际理论比值,本次测试的73.36%属于测试优化成功了</p>
+<p>在服务器上可以跑到80%以上的实际理论比值,考虑到可能是散热、降频导致比值上不去</p>
+<p>总而言之,在本机上的HPL优化调优获得一个大成功!</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E8%B6%85%E7%AE%97/" class="category-chain-item">超算</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/HPC/">#HPC</a>
+      
+        <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">#性能优化</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/a332e471e29e/" title="OneAPI HPL HPCG的安装与部分Linux笔记">
+                        <span class="hidden-mobile">OneAPI HPL HPCG的安装与部分Linux笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('mermaid' in window) {
+        mermaid.init();
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       © OZLIINEX Proudly published with <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> Theme <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      闽ICP备2021014966号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35010202001466"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="https://files.ozline.icu/images/ghs.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>闽公网安备35010202001466号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

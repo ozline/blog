@@ -1,0 +1,776 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://files.ozline.icu/images/site.ico">
+  <link rel="icon" href="https://files.ozline.icu/images/site.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="OZLIINEX">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="POJ-1797 Heavy Transportation POJ:http:&#x2F;&#x2F;poj.org&#x2F;problem?id&#x3D;1797 题目  Background Hugo Heavy is happy. After the breakdown of the Cargolifter project he can now expand business. But he needs a clever ma">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【题解】POJ-1797 Heavy Transportation 三种解法">
+<meta property="og:url" content="https://ozline.icu/d71f658b1ddd/index.html">
+<meta property="og:site_name" content="OZLIINEX&#39;s Blog">
+<meta property="og:description" content="POJ-1797 Heavy Transportation POJ:http:&#x2F;&#x2F;poj.org&#x2F;problem?id&#x3D;1797 题目  Background Hugo Heavy is happy. After the breakdown of the Cargolifter project he can now expand business. But he needs a clever ma">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-02T15:30:00.000Z">
+<meta property="article:modified_time" content="2022-05-05T13:41:41.000Z">
+<meta property="article:author" content="OZLIINEX">
+<meta property="article:tag" content="ACM">
+<meta property="article:tag" content="图论">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>【题解】POJ-1797 Heavy Transportation 三种解法 - OZLIINEX&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"ozline.icu","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":20,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"#"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":2},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":202181,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <!-- 51.la Analytics -->
+    <script async>
+      if (!Fluid.ctx.dnt) {
+        Fluid.utils.createScript('//js.users.51.la/202181.js');
+      }
+    </script>
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="OZLIINEX's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>OZLIINEX&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://files.ozline.icu/images/BannerImg.jpeg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="【题解】POJ-1797 Heavy Transportation 三种解法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-05-02 15:30" pubdate>
+          2022年5月2日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          67 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">【题解】POJ-1797 Heavy Transportation 三种解法</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1>POJ-1797 Heavy Transportation</h1>
+<p>POJ:<a target="_blank" rel="noopener" href="http://poj.org/problem?id=1797">http://poj.org/problem?id=1797</a></p>
+<h2 id="题目">题目</h2>
+<blockquote>
+<p>Background<br>
+Hugo Heavy is happy. After the breakdown of the Cargolifter project he can now expand business. But he needs a clever man who tells him whether there really is a way from the place his customer has build his giant steel crane to the place where it is needed on which all streets can carry the weight.<br>
+Fortunately he already has a plan of the city with all streets and bridges and all the allowed weights.Unfortunately he has no idea how to find the the maximum weight capacity in order to tell his customer how heavy the crane may become. But you surely know.</p>
+<p>Problem<br>
+You are given the plan of the city, described by the streets (with weight limits) between the crossings, which are numbered from 1 to n. Your task is to find the maximum weight that can be transported from crossing 1 (Hugo’s place) to crossing n (the customer’s place). You may assume that there is at least one path. All streets can be travelled in both directions.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Time Limit</th>
+<th>Memory Limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3000ms</td>
+<td>30000kB</td>
+</tr>
+</tbody>
+</table>
+<p>这道题参考了多个题解和教程，尝试着带着参考写了4种不同的答案（其中Dijkstra有2个），实际上这道题是入门图论题，只是我自己水平还有很大提升空间</p>
+<p><strong>这道题实际上求的是最大生成树，所以可以看到在一些地方会与标准的最小生成树符号反了</strong></p>
+<h2 id="方法一：Kruskal">方法一：Kruskal</h2>
+<h3 id="思路">思路</h3>
+<p>对边进行由大到小的排序，然后逐个边合并，一直到连通节点1（起始点）和节点n（终点）结束（代码里通过判断两个根节点是否一致来得出是否连通），<strong>由于我们边是按从大到小排序的，所以答案就是连通节点的最后一条边能支持的最大重量</strong>。嗯…模板无疑</p>
+<h3 id="代码">代码</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @author OZLIINEX</span><br><span class="hljs-comment"> * @brief POJ - 1797 Heavy Transportation Kruskal</span><br><span class="hljs-comment"> * @date 2022-05-02</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdlib&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXN 100001</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;<br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Edge</span><br>&#123;<br>    ll start;<br>    ll end;<br>    ll heavy;<br>&#125;;<br><br>ll plans;        <span class="hljs-comment">//计划数</span><br>ll n, m;         <span class="hljs-comment">//十字路口的条数（点的数量） 路径数量</span><br>ll ans;          <span class="hljs-comment">//答案</span><br>ll father[MAXN]; <span class="hljs-comment">//根节点</span><br>Edge heavy[MAXN];<br><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">compare</span><span class="hljs-params">(Edge m, Edge n)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> m.heavy &gt; n.heavy;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">set_make</span><span class="hljs-params">(ll n)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)<br>        father[i] = i;<br>&#125;<br><br><span class="hljs-function">ll <span class="hljs-title">set_find</span><span class="hljs-params">(ll x)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">if</span> (x != father[x])<br>        father[x] = <span class="hljs-built_in">set_find</span>(father[x]);<br>    <span class="hljs-keyword">return</span> father[x];<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">set_union</span><span class="hljs-params">(ll x, ll y)</span></span><br><span class="hljs-function"></span>&#123;<br>    ll fx = <span class="hljs-built_in">set_find</span>(x);<br>    ll fy = <span class="hljs-built_in">set_find</span>(y);<br><br>    <span class="hljs-keyword">if</span> (fx != fy)<br>        father[fy] = fx;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br><br>    <span class="hljs-built_in">memset</span>(heavy, <span class="hljs-number">0</span>, <span class="hljs-built_in">sizeof</span>(heavy)); <span class="hljs-comment">//重置为0</span><br>    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;plans);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> current = <span class="hljs-number">0</span>; current &lt; plans; current++)<br>    &#123;<br>        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%lld %lld&quot;</span>, &amp;n, &amp;m);<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++)<br>            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%lld %lld %lld&quot;</span>, &amp;heavy[i].start, &amp;heavy[i].end, &amp;heavy[i].heavy);<br><br>        <span class="hljs-built_in">set_make</span>(MAXN<span class="hljs-number">-1</span>);<br>        <span class="hljs-built_in">sort</span>(heavy, heavy + m, compare);<br>        ll k = <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++)<br>        &#123;<br>            ans = i;<br>            <span class="hljs-keyword">if</span> (k == n)<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">set_find</span>(heavy[i].start) != <span class="hljs-built_in">set_find</span>(heavy[i].end))<br>            &#123;<br>                <span class="hljs-built_in">set_union</span>(heavy[i].start, heavy[i].end);<br>                k++;<br>                <span class="hljs-keyword">if</span> (<span class="hljs-built_in">set_find</span>(<span class="hljs-number">1</span>) == <span class="hljs-built_in">set_find</span>(n))<br>                    <span class="hljs-keyword">break</span>;<br>            &#125;<br>        &#125;<br><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Scenario #%d:\n%d\n\n&quot;</span>, current + <span class="hljs-number">1</span>, heavy[ans].heavy); <span class="hljs-comment">//输出答案</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="方法二：-带队列优化的Bellman-Ford-（SPFA）">方法二： 带队列优化的Bellman-Ford （SPFA）</h2>
+<h3 id="思路-2">思路</h3>
+<p>B站学习了一圈，再参考了其他人的题解，实际上这个SPFA法解题只需要改一个地方：</p>
+<p>标准的spfa的dis数组记录的是距离（最小距离balabala），但因为题目原因，这道题需要把dis数组改为从起始点到当前点的最大承重量</p>
+<p>因此只需要把标准的<code>dis[v]&gt;dis[now]+Edge[now][i].second</code>改为<code>min(dis[now], Edge[now][i].second) &gt; dis[Edge[now][i].first]</code>就好了，当然，下面那个更新状态的语句也要改。改完就能跑通了（跑通就过！</p>
+<h3 id="代码-2">代码</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @author OZLIINEX</span><br><span class="hljs-comment"> * @brief POJ - 1797 Heavy Transportation SPFA</span><br><span class="hljs-comment"> * @date 2022-04-29</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdlib&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;queue&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXN 1000001</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> INF 1 &lt;&lt; 30</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;<br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-type">int</span> plans; <span class="hljs-comment">//计划数</span><br><span class="hljs-type">int</span> n, m;  <span class="hljs-comment">//十字路口的条数（点的数量） 路径数量</span><br><br>vector&lt;pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt;&gt; Edge[MAXN];<br><span class="hljs-type">bool</span> vis[MAXN];<br><span class="hljs-type">int</span> dis[MAXN];<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SPFA</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">memset</span>(vis, <span class="hljs-literal">false</span>, <span class="hljs-built_in">sizeof</span>(vis)); <span class="hljs-comment">//重置为0</span><br>    <span class="hljs-built_in">memset</span>(dis, <span class="hljs-number">0</span>, <span class="hljs-built_in">sizeof</span>(dis));<br><br>    queue&lt;<span class="hljs-type">int</span>&gt; Q;<br>    Q.<span class="hljs-built_in">push</span>(<span class="hljs-number">1</span>);<br>    vis[<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;<br>    dis[<span class="hljs-number">1</span>] = INF;<br><br>    <span class="hljs-keyword">while</span> (!Q.<span class="hljs-built_in">empty</span>())<br>    &#123;<br>        <span class="hljs-type">int</span> now = Q.<span class="hljs-built_in">front</span>();<br>        Q.<span class="hljs-built_in">pop</span>();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; Edge[now].<span class="hljs-built_in">size</span>(); i++)<br>        &#123;<br>            <span class="hljs-type">int</span> next = Edge[now][i].first;<br>            <span class="hljs-type">int</span> heavy = Edge[now][i].second;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">min</span>(dis[now], heavy) &gt; dis[next])<br>            &#123;<br>                dis[next] = <span class="hljs-built_in">min</span>(dis[now], heavy);<br>                <span class="hljs-keyword">if</span> (!vis[next])<br>                &#123;<br>                    vis[next] = <span class="hljs-literal">true</span>;<br>                    Q.<span class="hljs-built_in">push</span>(next);<br>                &#125;<br>            &#125;<br>        &#125;<br>        vis[now] = <span class="hljs-number">0</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;plans);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> current = <span class="hljs-number">0</span>; current &lt; plans; current++)<br>    &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; MAXN; i++)<br>            Edge[i].<span class="hljs-built_in">clear</span>();<br>        <span class="hljs-type">int</span> tmp_start, tmp_end, tmp_heavy;<br>        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d %d&quot;</span>, &amp;n, &amp;m);<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++)<br>        &#123;<br>            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d %d %d&quot;</span>, &amp;tmp_start, &amp;tmp_end, &amp;tmp_heavy);<br>            Edge[tmp_start].<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">make_pair</span>(tmp_end, tmp_heavy));<br>            Edge[tmp_end].<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">make_pair</span>(tmp_start, tmp_heavy));<br>        &#125;<br>        <span class="hljs-built_in">SPFA</span>();<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Scenario #%d:\n%d\n\n&quot;</span>, current + <span class="hljs-number">1</span>, dis[n]); <span class="hljs-comment">//输出答案</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="方法三：Dijkstra">方法三：Dijkstra</h2>
+<h3 id="思路-3">思路</h3>
+<p>太模板了，其实一些思路与方法一的思路还是很像的<br>
+<strong>更新条件是：</strong><code>1.这个点没有被访问过 2.这个点到起始点的代价比前面确定的点到起始点的代价和当前点到前面确定点的代价都要小</code></p>
+<h3 id="代码-3">代码</h3>
+<h4 id="带优先队列优化的">带优先队列优化的</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @author OZLIINEX</span><br><span class="hljs-comment"> * @brief POJ - 1797 Heavy Transportation Dijkstra</span><br><span class="hljs-comment"> * @date 2022-05-02</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdlib&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;queue&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXN 10001</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> INF 1e7</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;<br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-type">int</span> plans; <span class="hljs-comment">//计划数</span><br><span class="hljs-type">int</span> n, m;  <span class="hljs-comment">//十字路口的条数（点的数量） 路径数量</span><br><br>vector&lt;pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt;&gt; Edge[MAXN];<br><span class="hljs-type">int</span> dis[MAXN];<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Djistra</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">memset</span>(dis, <span class="hljs-number">0</span>, <span class="hljs-built_in">sizeof</span>(dis));<br><br>    priority_queue&lt;pair&lt;<span class="hljs-type">int</span>, <span class="hljs-type">int</span>&gt;&gt; Q; <span class="hljs-comment">//第二个是我们要表示的点，而第一个仅仅只是用于排序而已</span><br>    dis[<span class="hljs-number">1</span>] = INF;<br>    Q.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">make_pair</span>(dis[<span class="hljs-number">1</span>], <span class="hljs-number">1</span>));<br><br>    <span class="hljs-keyword">while</span> (!Q.<span class="hljs-built_in">empty</span>())<br>    &#123;<br>        <span class="hljs-type">int</span> now = Q.<span class="hljs-built_in">top</span>().second;<br>        Q.<span class="hljs-built_in">pop</span>();<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; Edge[now].<span class="hljs-built_in">size</span>(); i++)<br>        &#123;<br>            <span class="hljs-type">int</span> next = Edge[now][i].first;<br>            <span class="hljs-type">int</span> heavy = Edge[now][i].second;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">min</span>(dis[now], heavy) &gt; dis[next])<br>            &#123;<br>                dis[next] = <span class="hljs-built_in">min</span>(dis[now], heavy);<br>                Q.<span class="hljs-built_in">push</span>(<span class="hljs-built_in">make_pair</span>(dis[next], next));<br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;plans);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> current = <span class="hljs-number">0</span>; current &lt; plans; current++)<br>    &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; MAXN; i++)<br>            Edge[i].<span class="hljs-built_in">clear</span>();<br>        <span class="hljs-type">int</span> tmp_start, tmp_end, tmp_heavy;<br>        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d %d&quot;</span>, &amp;n, &amp;m);<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++)<br>        &#123;<br>            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d %d %d&quot;</span>, &amp;tmp_start, &amp;tmp_end, &amp;tmp_heavy);<br>            Edge[tmp_start].<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">make_pair</span>(tmp_end, tmp_heavy));<br>            Edge[tmp_end].<span class="hljs-built_in">push_back</span>(<span class="hljs-built_in">make_pair</span>(tmp_start, tmp_heavy));<br>        &#125;<br>        <span class="hljs-built_in">Djistra</span>();<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Scenario #%d:\n%d\n\n&quot;</span>, current + <span class="hljs-number">1</span>, dis[n]); <span class="hljs-comment">//输出答案</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="不带优先队列优化的">不带优先队列优化的</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * @author OZLIINEX</span><br><span class="hljs-comment"> * @brief POJ - 1797 Heavy Transportation Dijkstra</span><br><span class="hljs-comment"> * @date 2022-05-02</span><br><span class="hljs-comment"> */</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdio&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstdlib&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cmath&gt;</span></span><br><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MAXN 2001</span><br><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> ll;<br><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-type">int</span> plans;           <span class="hljs-comment">//计划数</span><br><span class="hljs-type">int</span> n, m;            <span class="hljs-comment">//十字路口的条数（点的数量） 路径数量</span><br><span class="hljs-type">int</span> vis[MAXN * <span class="hljs-number">100</span>]; <span class="hljs-comment">//是否访问</span><br><span class="hljs-type">int</span> d[MAXN * <span class="hljs-number">100</span>];   <span class="hljs-comment">//当前点到起点的最大承载重量</span><br><span class="hljs-type">int</span> heavy[MAXN][MAXN];<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">djistra</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">memset</span>(vis, <span class="hljs-number">0</span>, <span class="hljs-built_in">sizeof</span>(vis));<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt;= n; i++)<br>        d[i] = heavy[i][start];<br>    vis[start] = <span class="hljs-number">1</span>; <span class="hljs-comment">//第一个点已经被访问啦</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i &lt; m; i++)<br>    &#123;<br>        <span class="hljs-type">int</span> point = <span class="hljs-number">0</span>;<br>        <span class="hljs-type">int</span> maxHeavy = <span class="hljs-number">0</span>;<br><br>        <span class="hljs-comment">//找一条承载重量最大且没被访问的边</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= n; j++)<br>        &#123;<br>            <span class="hljs-keyword">if</span> (!vis[j] &amp;&amp; d[j] &gt; maxHeavy)<br>                maxHeavy = d[j], point = j;<br>        &#125;<br>        <span class="hljs-keyword">if</span> (!maxHeavy) <span class="hljs-comment">//没有找到合适的边</span><br>            <span class="hljs-keyword">break</span>;<br>        vis[point] = <span class="hljs-number">1</span>; <span class="hljs-comment">//标记这个点为已访问</span><br>        <span class="hljs-comment">//对于每一条边，进行松弛</span><br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>; j &lt;= n; j++)<br>        &#123;<br>            <span class="hljs-comment">//1.这个点没有被访问过 2.这个点到起始点的代价比前面确定的点到起始点的代价和当前点到前面确定点的代价都要小</span><br>            <span class="hljs-keyword">if</span> (!vis[j] &amp;&amp; d[j] &lt; <span class="hljs-built_in">min</span>(d[point], heavy[point][j]))&#123;<br>                d[j] = <span class="hljs-built_in">min</span>(d[point], heavy[point][j]); <span class="hljs-comment">//更新这个点的最大承载力的最大值</span><br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d&quot;</span>, &amp;plans);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> current = <span class="hljs-number">0</span>; current &lt; plans; current++)<br>    &#123;<br>        <span class="hljs-built_in">memset</span>(heavy, <span class="hljs-number">0</span>, <span class="hljs-built_in">sizeof</span>(heavy)); <span class="hljs-comment">//重置为0</span><br>        <span class="hljs-built_in">memset</span>(d, <span class="hljs-number">0</span>, <span class="hljs-built_in">sizeof</span>(d));         <span class="hljs-comment">//重置为0</span><br>        <span class="hljs-type">int</span> tmp_start, tmp_end, tmp_heavy;<br>        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d %d&quot;</span>, &amp;n, &amp;m);<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; m; i++)<br>        &#123;<br>            <span class="hljs-built_in">scanf</span>(<span class="hljs-string">&quot;%d %d %d&quot;</span>, &amp;tmp_start, &amp;tmp_end, &amp;tmp_heavy);<br>            heavy[tmp_start][tmp_end] = heavy[tmp_end][tmp_start] = tmp_heavy;<br>        &#125;<br>        <span class="hljs-built_in">djistra</span>(<span class="hljs-number">1</span>, n);<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Scenario #%d:\n%d\n\n&quot;</span>, current + <span class="hljs-number">1</span>, d[n]); <span class="hljs-comment">//输出答案</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="Reference">Reference</h2>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-cn/%E5%85%8B%E9%B2%81%E6%96%AF%E5%85%8B%E5%B0%94%E6%BC%94%E7%AE%97%E6%B3%95">https://zh.wikipedia.org/zh-cn/克鲁斯克尔演算法</a><br>
+<a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/zh-sg/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%E5%BF%AB%E9%80%9F%E7%AE%97%E6%B3%95">https://zh.m.wikipedia.org/zh-sg/最短路径快速算法</a><br>
+<a target="_blank" rel="noopener" href="https://zh.m.wikipedia.org/wiki/%E5%85%8B%E9%B2%81%E6%96%AF%E5%85%8B%E5%B0%94%E6%BC%94%E7%AE%97%E6%B3%95">https://zh.m.wikipedia.org/wiki/克鲁斯克尔演算法</a><br>
+<a target="_blank" rel="noopener" href="https://www.programminghunter.com/article/5506934098/">https://www.programminghunter.com/article/5506934098/</a><br>
+<a target="_blank" rel="noopener" href="https://www.cnblogs.com/zxy160/p/7215156.html">https://www.cnblogs.com/zxy160/p/7215156.html</a><br>
+<a target="_blank" rel="noopener" href="https://jqh.zone/blog/post_detail/515/post_detail/377">https://jqh.zone/blog/post_detail/515/post_detail/377</a><br>
+<a target="_blank" rel="noopener" href="https://blog.csdn.net/u011265346/article/details/42914843">https://blog.csdn.net/u011265346/article/details/42914843</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/POJ%E9%A2%98%E8%A7%A3/" class="category-chain-item">POJ题解</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ACM/">#ACM</a>
+      
+        <a href="/tags/%E5%9B%BE%E8%AE%BA/">#图论</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/ca113b437a77/" title="【题解】POJ-1860 Currency Exchange">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【题解】POJ-1860 Currency Exchange</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/bc0566ddf8c1/" title="【题解】POJ-1182 食物链">
+                        <span class="hidden-mobile">【题解】POJ-1182 食物链</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('mermaid' in window) {
+        mermaid.init();
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       © OZLIINEX Proudly published with <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> Theme <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      闽ICP备2021014966号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=35010202001466"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="https://files.ozline.icu/images/ghs.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>闽公网安备35010202001466号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

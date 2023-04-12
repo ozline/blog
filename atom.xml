@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>OZLIINEX&#39;s Blog</title>
+  
+  
+  <link href="https://ozline.icu/atom.xml" rel="self"/>
+  
+  <link href="https://ozline.icu/"/>
+  <updated>2022-11-09T17:39:57.951Z</updated>
+  <id>https://ozline.icu/</id>
+  
+  <author>
+    <name>OZLIINEX</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HPL本机性能调优分析</title>
+    <link href="https://ozline.icu/e4edabdd2525/"/>
+    <id>https://ozline.icu/e4edabdd2525/</id>
+    <published>2022-11-02T14:30:00.000Z</published>
+    <updated>2022-11-09T17:39:57.951Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;HPL性能调优&lt;/h1&gt;
+&lt;h2 id=&quot;环境&quot;&gt;环境&lt;/h2&gt;
+&lt;p&gt;Ubuntu22.04 插电状态&lt;/p&gt;
+&lt;p&gt;笔记本关闭显示,不进入休眠,注销用户,在其他电脑上利用ssh连接&lt;/p&gt;
+&lt;p&gt;RAM:16G DDR3&lt;/p&gt;
+&lt;p&gt;CPU: i7-4980HQ</summary>
+        
+      
+    
+    
+    
+    <category term="超算" scheme="https://ozline.icu/categories/%E8%B6%85%E7%AE%97/"/>
+    
+    
+    <category term="HPC" scheme="https://ozline.icu/tags/HPC/"/>
+    
+    <category term="性能优化" scheme="https://ozline.icu/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OneAPI HPL HPCG的安装与部分Linux笔记</title>
+    <link href="https://ozline.icu/a332e471e29e/"/>
+    <id>https://ozline.icu/a332e471e29e/</id>
+    <published>2022-10-07T14:30:00.000Z</published>
+    <updated>2022-10-09T16:40:13.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;OneAPI HPL</summary>
+        
+      
+    
+    
+    
+    
+    <category term="大学" scheme="https://ozline.icu/tags/%E5%A4%A7%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2021，我的大一年终总结</title>
+    <link href="https://ozline.icu/076f5190990a/"/>
+    <id>https://ozline.icu/076f5190990a/</id>
+    <published>2022-09-16T17:30:00.000Z</published>
+    <updated>2022-10-09T16:59:17.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;2021，我的大一年终总结&lt;/h1&gt;
+&lt;p&gt;本来是打算9月8号早上8点发到博客上的，结果这段时间一堆的事情拖着，一直到今晚才有空认真写一下&lt;/p&gt;
+&lt;h2</summary>
+        
+      
+    
+    
+    
+    
+    <category term="大学" scheme="https://ozline.icu/tags/%E5%A4%A7%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2022近代史重点题目-陈亮</title>
+    <link href="https://ozline.icu/c1c2b5eab2ee/"/>
+    <id>https://ozline.icu/c1c2b5eab2ee/</id>
+    <published>2022-06-06T15:00:00.000Z</published>
+    <updated>2022-06-06T14:39:02.547Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;近代史&lt;/h1&gt;
+&lt;h2 id=&quot;如何理解近代中国的基本国情？-如何认识近代史的主流、本质？&quot;&gt;如何理解近代中国的基本国情？ / 如何认识近代史的主流、本质？&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li</summary>
+        
+      
+    
+    
+    
+    
+    <category term="大学" scheme="https://ozline.icu/tags/%E5%A4%A7%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】HDU-1846 Brave Game</title>
+    <link href="https://ozline.icu/72a5f259e3aa/"/>
+    <id>https://ozline.icu/72a5f259e3aa/</id>
+    <published>2022-05-14T15:30:00.000Z</published>
+    <updated>2022-05-13T17:47:25.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;HDU-1846 Brave Game&lt;/h1&gt;
+&lt;p&gt;HDU：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="HDU题解" scheme="https://ozline.icu/categories/HDU%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+    <category term="博弈论" scheme="https://ozline.icu/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】HDU-2176 取(m堆)石子游戏</title>
+    <link href="https://ozline.icu/c233f4c322d4/"/>
+    <id>https://ozline.icu/c233f4c322d4/</id>
+    <published>2022-05-05T15:30:00.000Z</published>
+    <updated>2022-05-07T11:39:20.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;HDU-2176 HDU-1850 取(m堆)石子游戏&lt;/h1&gt;
+&lt;p&gt;【HDU-2176】HDU：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="HDU题解" scheme="https://ozline.icu/categories/HDU%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+    <category term="博弈论" scheme="https://ozline.icu/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】HDU-2516 取石子游戏</title>
+    <link href="https://ozline.icu/7e25f67522dc/"/>
+    <id>https://ozline.icu/7e25f67522dc/</id>
+    <published>2022-05-05T12:30:00.000Z</published>
+    <updated>2022-05-05T13:41:11.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;HDU-2516 取石子游戏&lt;/h1&gt;
+&lt;p&gt;HDU：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="HDU题解" scheme="https://ozline.icu/categories/HDU%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+    <category term="博弈论" scheme="https://ozline.icu/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】HDU-1527 HDU-2177 取(2堆)石子游戏</title>
+    <link href="https://ozline.icu/d71b2d6cbfd5/"/>
+    <id>https://ozline.icu/d71b2d6cbfd5/</id>
+    <published>2022-05-04T15:30:00.000Z</published>
+    <updated>2022-05-05T13:41:06.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;HDU-1527 HDU-2177 取(2堆)石子游戏&lt;/h1&gt;
+&lt;p&gt;【HDU-1527】HDU：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="HDU题解" scheme="https://ozline.icu/categories/HDU%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+    <category term="博弈论" scheme="https://ozline.icu/tags/%E5%8D%9A%E5%BC%88%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】POJ-3159 Candies 卡Queue+SPFA与Vector</title>
+    <link href="https://ozline.icu/c66f9f8bda20/"/>
+    <id>https://ozline.icu/c66f9f8bda20/</id>
+    <published>2022-05-03T13:00:00.000Z</published>
+    <updated>2022-05-05T13:41:57.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;POJ-3159 Candies&lt;/h1&gt;
+&lt;p&gt;POJ:&lt;a href=&quot;http://poj.org/problem?id=3159&quot;&gt;http://poj.org/problem?id=3159&lt;/a&gt;&lt;/p&gt;
+&lt;h2</summary>
+        
+      
+    
+    
+    
+    <category term="POJ题解" scheme="https://ozline.icu/categories/POJ%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+    <category term="图论" scheme="https://ozline.icu/tags/%E5%9B%BE%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】POJ-1860 Currency Exchange</title>
+    <link href="https://ozline.icu/ca113b437a77/"/>
+    <id>https://ozline.icu/ca113b437a77/</id>
+    <published>2022-05-03T09:00:00.000Z</published>
+    <updated>2022-05-05T13:41:54.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;POJ-1860 Currency Exchange&lt;/h1&gt;
+&lt;p&gt;POJ:&lt;a href=&quot;http://poj.org/problem?id=1860&quot;&gt;http://poj.org/problem?id=1860&lt;/a&gt;&lt;/p&gt;
+&lt;h2</summary>
+        
+      
+    
+    
+    
+    <category term="POJ题解" scheme="https://ozline.icu/categories/POJ%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+    <category term="图论" scheme="https://ozline.icu/tags/%E5%9B%BE%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】POJ-1797 Heavy Transportation 三种解法</title>
+    <link href="https://ozline.icu/d71f658b1ddd/"/>
+    <id>https://ozline.icu/d71f658b1ddd/</id>
+    <published>2022-05-02T15:30:00.000Z</published>
+    <updated>2022-05-05T13:41:41.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;POJ-1797 Heavy Transportation&lt;/h1&gt;
+&lt;p&gt;POJ:&lt;a href=&quot;http://poj.org/problem?id=1797&quot;&gt;http://poj.org/problem?id=1797&lt;/a&gt;&lt;/p&gt;
+&lt;h2</summary>
+        
+      
+    
+    
+    
+    <category term="POJ题解" scheme="https://ozline.icu/categories/POJ%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+    <category term="图论" scheme="https://ozline.icu/tags/%E5%9B%BE%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】POJ-1182 食物链</title>
+    <link href="https://ozline.icu/bc0566ddf8c1/"/>
+    <id>https://ozline.icu/bc0566ddf8c1/</id>
+    <published>2022-04-28T15:30:00.000Z</published>
+    <updated>2022-05-05T13:42:55.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;POJ-1182 食物链&lt;/h1&gt;
+&lt;p&gt;POJ：&lt;a href=&quot;http://poj.org/problem?id=1182&quot;&gt;http://poj.org/problem?id=1182&lt;/a&gt;&lt;/p&gt;
+&lt;h2</summary>
+        
+      
+    
+    
+    
+    <category term="POJ题解" scheme="https://ozline.icu/categories/POJ%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+    <category term="图论" scheme="https://ozline.icu/tags/%E5%9B%BE%E8%AE%BA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2021思修冲刺提纲</title>
+    <link href="https://ozline.icu/768d045b3503/"/>
+    <id>https://ozline.icu/768d045b3503/</id>
+    <published>2022-01-02T15:00:00.000Z</published>
+    <updated>2022-01-02T15:20:50.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;绪论：当担复兴大任，培养时代新人&lt;/h1&gt;
+&lt;h2 id=&quot;新时代呼唤担当民族复兴大任的时代新人&quot;&gt;新时代呼唤担当民族复兴大任的时代新人&lt;/h2&gt;
+&lt;ul class=&quot;lvl-0&quot;&gt;
+&lt;li</summary>
+        
+      
+    
+    
+    
+    
+    <category term="大学" scheme="https://ozline.icu/tags/%E5%A4%A7%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Home Assistant后续 - 接入米家蓝牙设备</title>
+    <link href="https://ozline.icu/a9464a0f89ed/"/>
+    <id>https://ozline.icu/a9464a0f89ed/</id>
+    <published>2022-01-01T13:00:00.000Z</published>
+    <updated>2022-05-04T08:42:20.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;Home Assistant 更新&lt;/h1&gt;
+&lt;p&gt;月底的时候发现HA有新版本，直接进入容器，执行：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span</summary>
+        
+      
+    
+    
+    
+    <category term="RaspBerryPi" scheme="https://ozline.icu/categories/RaspBerryPi/"/>
+    
+    
+    <category term="智能家居" scheme="https://ozline.icu/tags/%E6%99%BA%E8%83%BD%E5%AE%B6%E5%B1%85/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】HDU-2089 不要62</title>
+    <link href="https://ozline.icu/620286314092/"/>
+    <id>https://ozline.icu/620286314092/</id>
+    <published>2021-12-26T03:30:00.000Z</published>
+    <updated>2022-05-05T13:41:16.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;HDU-2089 不要62&lt;/h1&gt;
+&lt;p&gt;HDU：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="HDU题解" scheme="https://ozline.icu/categories/HDU%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】HDU-1013 Digital Roots</title>
+    <link href="https://ozline.icu/0322af2807f3/"/>
+    <id>https://ozline.icu/0322af2807f3/</id>
+    <published>2021-12-23T15:00:00.000Z</published>
+    <updated>2022-05-05T13:41:18.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;HDU-1013 Digital Roots&lt;/h1&gt;
+&lt;p&gt;HDU：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="HDU题解" scheme="https://ozline.icu/categories/HDU%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】POJ-1833 排列</title>
+    <link href="https://ozline.icu/bad3fa39caf9/"/>
+    <id>https://ozline.icu/bad3fa39caf9/</id>
+    <published>2021-12-22T07:00:00.000Z</published>
+    <updated>2022-05-05T13:42:38.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;POJ-1833 排列&lt;/h1&gt;
+&lt;p&gt;POJ：&lt;a href=&quot;http://poj.org/problem?id=1833&quot;&gt;http://poj.org/problem?id=1833&lt;/a&gt;&lt;/p&gt;
+&lt;h2</summary>
+        
+      
+    
+    
+    
+    <category term="POJ题解" scheme="https://ozline.icu/categories/POJ%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+    <category term="数学" scheme="https://ozline.icu/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】CodeForces-321A Ciel and Robot</title>
+    <link href="https://ozline.icu/f6e7e70deedd/"/>
+    <id>https://ozline.icu/f6e7e70deedd/</id>
+    <published>2021-12-21T18:00:00.000Z</published>
+    <updated>2022-05-05T13:44:22.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;CodeForces-321A Ciel and Robot&lt;/h1&gt;
+&lt;p&gt;CF：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="CodeForces题解" scheme="https://ozline.icu/categories/CodeForces%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+    <category term="数学" scheme="https://ozline.icu/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Home Assistant实现Mijia与Homekit互联 --使用RaspberryPi</title>
+    <link href="https://ozline.icu/03d49bf4c6ee/"/>
+    <id>https://ozline.icu/03d49bf4c6ee/</id>
+    <published>2021-12-20T19:09:00.000Z</published>
+    <updated>2022-05-04T08:42:16.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;Home Assistant 实现Mijia与Homekit互联 --使用RaspberryPi&lt;/h1&gt;
+&lt;p&gt;&lt;img src=&quot;https://files.ozline.icu/images/blog/HA/HA_05.png&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="RaspBerryPi" scheme="https://ozline.icu/categories/RaspBerryPi/"/>
+    
+    
+    <category term="智能家居" scheme="https://ozline.icu/tags/%E6%99%BA%E8%83%BD%E5%AE%B6%E5%B1%85/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【题解】CodeForces-936A SAVE ENERGY!</title>
+    <link href="https://ozline.icu/a6579764190c/"/>
+    <id>https://ozline.icu/a6579764190c/</id>
+    <published>2021-12-12T18:30:00.000Z</published>
+    <updated>2022-05-05T13:43:55.000Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1&gt;CodeForces-936A SAVE ENERGY!&lt;/h1&gt;
+&lt;p&gt;CF：&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="CodeForces题解" scheme="https://ozline.icu/categories/CodeForces%E9%A2%98%E8%A7%A3/"/>
+    
+    
+    <category term="ACM" scheme="https://ozline.icu/tags/ACM/"/>
+    
+    <category term="数学" scheme="https://ozline.icu/tags/%E6%95%B0%E5%AD%A6/"/>
+    
+  </entry>
+  
+</feed>
