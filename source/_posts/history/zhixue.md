@@ -1,8 +1,7 @@
 ---
 title: 智学网HTTP协议分析记录
-date: 2021-10-17 01:29:43
-tags: HTTP
-desc: 对网站登录、抓取程序进行分析综合
+date: 2018-10-17 01:29:43
+tags: history
 ---
 
 # 智学网(zhixue.com)HTTP协议分析记录

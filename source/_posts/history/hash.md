@@ -1,7 +1,7 @@
 ---
 title: Hash函数
-date: 2021-10-17 01:35:43
-tags: ACM
+date: 2018-10-17 01:35:43
+tags: history
 ---
 
 # Hash

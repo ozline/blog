@@ -1,7 +1,7 @@
 ---
 title: 并查集
-date: 2021-10-17 01:37:43
-tags: ACM
+date: 2018-10-17 01:37:43
+tags: history
 ---
 
 # 并查集

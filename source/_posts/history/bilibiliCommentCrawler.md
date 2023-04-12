@@ -1,8 +1,7 @@
 ---
 title: DFS实现Bilibili视频评论爬虫
 date: 2021-11-15 01:29:43
-tags: golang
-
+tags: history
 ---
 
 西二在线Golang组的11月考核有一个提高任务，是爬取何同学某一个视频的评论并且使用mysql储存，这里单独写一篇文章来记录编写过程中的一些事
